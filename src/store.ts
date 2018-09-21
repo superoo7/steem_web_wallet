@@ -3,15 +3,16 @@ import { createStore, applyMiddleware, compose, ReducersMapObject } from 'redux'
 // Epics
 import { combineEpics, createEpicMiddleware, Epic } from 'redux-observable';
 
-import { signInEpic } from './Component/Shared/SignIn/SignInEpic';
+import { signInEpic, signInFreshEpic } from './Component/Shared/SignIn/SignInEpic';
 
-const Epics: Epic<any> = combineEpics(signInEpic);
+const Epics: Epic<any> = combineEpics(signInEpic, signInFreshEpic);
 const epicMiddleware = createEpicMiddleware();
 
 // Combine Reducers
 import { combineReducers } from 'redux';
 import { headerReducer, HeaderState, HeaderActions, headerInitialState } from './Component/Shared/Header/HeaderReducer';
 import { signInInitialState, signInReducer, SignInState, SignInActions } from './Component/Shared/SignIn/SignInReducer';
+import { signInFresh } from 'Component/Shared/SignIn/SignInAction';
 
 interface reducerState {
     header: HeaderState;
@@ -36,5 +37,7 @@ const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddl
 
 // start epic
 epicMiddleware.run(Epics);
+
+store.dispatch(signInFresh());
 
 export default store;

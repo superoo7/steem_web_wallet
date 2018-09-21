@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 import { RootAction, RootState } from 'Types';
 import { signInInit } from './SignInAction';
 import Loading from './Loading/Loading';
-import { getIsLoading } from './SignInSelector';
+import { getIsLoading, getIsSignIn, getUsername } from './SignInSelector';
 
 interface ISignInProps {
+    isLoading: boolean;
+    isSignIn: boolean;
+    username: string;
     signInInit: (username: string, activeKey: string, password: string) => void;
 }
 
@@ -16,12 +19,24 @@ class SignIn extends React.Component<ISignInProps, ISignInState> {
     componentDidMount() {}
 
     render() {
-        return <Loading />;
+        const { isLoading, isSignIn, username } = this.props;
+
+        if (isLoading) {
+            return <Loading />;
+        }
+
+        if (isSignIn) {
+            return <div>SIGN IN as {username}</div>;
+        }
+
+        return <div>NOT SIGN IN</div>;
     }
 }
 
 const mapStateToProps = (state: RootState, _ownProps: {}) => ({
     isLoading: getIsLoading(state),
+    isSignIn: getIsSignIn(state),
+    username: getUsername(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
