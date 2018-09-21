@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RootAction, RootState } from 'Types';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
+import Select from 'react-select';
 const QRCode = require('qrcode.react');
 
 import { getAuthorProfiles } from 'Component/Shared/SignIn/Wallet/SteemProfileAction';
@@ -29,14 +30,31 @@ interface IWalletProps {
     getAuthorProfiles: (authors: string[]) => void;
 }
 
-interface IWalletState {}
+interface IWalletState {
+    selectedOption: {
+        label: string;
+        value: string;
+    };
+}
 
 class Wallet extends React.Component<IWalletProps, IWalletState> {
+    state = {
+        selectedOption: {
+            label: 'SWW',
+            value: `${window.location.origin}/profile/${this.props.username}`,
+        },
+    };
     componentDidMount() {
         if (!this.props.profile.profiles[this.props.username]) {
             this.props.getAuthorProfiles([this.props.username]);
         }
     }
+
+    handleChange = (selectedOption: any) => {
+        this.setState({ selectedOption });
+        console.log(selectedOption);
+    };
+
     render() {
         const { profile, username } = this.props;
         const { isLoading, profiles } = profile;
@@ -45,7 +63,12 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
             return <Loading />;
         }
         const location = `${window.location.origin}/profile/${username}`;
-
+        const selectOpt = [
+            { value: location, label: 'SWW' },
+            { value: `https://steemit.com/@${username}/transfers`, label: 'Steemit' },
+            { value: `https://busy.org/@${username}/transfers`, label: 'Busy' },
+        ];
+        const { selectedOption } = this.state;
         return (
             <div className="Wallet__Container--Out">
                 <div
@@ -66,8 +89,9 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                         <span>SBD: {parseFloat(prof.sbd_balance)}</span>
                     </div>
                     <div className="Card Card__QR">
-                        <QRCode className="QR" value={location} />
-                        <input className="QR__Text" value={location} />
+                        <Select options={selectOpt} onChange={this.handleChange} value={selectedOption} />
+                        <QRCode className="QR" value={selectedOption.value} />
+                        <input className="QR__Text" value={selectedOption.value} />
                     </div>
                 </div>
             </div>

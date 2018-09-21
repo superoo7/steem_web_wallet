@@ -45,12 +45,11 @@
 .Card__QR {
     display: flex;
     flex-direction: column;
+    font-size: $Heading2;
 
     .QR {
         margin: 1rem auto;
     }
 
-    .QR__Text {
-        font-size: $Heading2;
-    }
+    .QR__Text {}
 }
