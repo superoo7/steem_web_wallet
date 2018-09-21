@@ -2,6 +2,8 @@ import * as React from 'react';
 import { RootAction, RootState } from 'Types';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
+const QRCode = require('qrcode.react');
+
 import { getAuthorProfiles } from 'Component/Shared/SignIn/Wallet/SteemProfileAction';
 import { getProfile } from './SteemProfileSelector';
 import Loading from 'Component/Shared/SignIn/Loading/Loading';
@@ -42,6 +44,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
         if (isLoading || !prof) {
             return <Loading />;
         }
+        const location = `${window.location.origin}/profile/${username}`;
 
         return (
             <div className="Wallet__Container--Out">
@@ -55,11 +58,17 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                     <h2>{username}</h2>
                 </div>
 
-                <div className="Card Card__Steem">
-                    <span>STEEM: {parseFloat(prof.balance)} </span>
-                </div>
-                <div className="Card Card__SBD">
-                    <span>SBD: {parseFloat(prof.sbd_balance)}</span>
+                <div>
+                    <div className="Card Card__Steem">
+                        <span>STEEM: {parseFloat(prof.balance)} </span>
+                    </div>
+                    <div className="Card Card__SBD">
+                        <span>SBD: {parseFloat(prof.sbd_balance)}</span>
+                    </div>
+                    <div className="Card Card__QR">
+                        <QRCode className="QR" value={location} />
+                        <input className="QR__Text" value={location} />
+                    </div>
                 </div>
             </div>
         );

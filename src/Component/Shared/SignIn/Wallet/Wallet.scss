@@ -30,6 +30,7 @@
     text-align: center;
     background: #eee;
     padding: 1rem;
+    margin: 0.5rem auto;
 
     span {
         color: grey;
@@ -37,8 +38,19 @@
     }
 }
 
-.Card__Steem {
-    margin: 0.5rem auto;
-}
+.Card__Steem {}
 
 .Card__SBD {}
+
+.Card__QR {
+    display: flex;
+    flex-direction: column;
+
+    .QR {
+        margin: 1rem auto;
+    }
+
+    .QR__Text {
+        font-size: $Heading2;
+    }
+}
