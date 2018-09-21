@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const OfflinePlugin = require('offline-plugin');
 
 
 module.exports = {
@@ -42,6 +43,7 @@ module.exports = {
     },
     plugins: [
         // new BundleAnalyzerPlugin(),
+        new OfflinePlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.EnvironmentPlugin({
             'NODE_ENV': 'development'

@@ -4,6 +4,9 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import 'whatwg-fetch';
 
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
+OfflinePluginRuntime.install();
+
 import Router from './Router';
 import './index.scss';
 import store from './store';
