@@ -1,0 +1,10 @@
+language: node_js
+cache:
+    yarn: true
+node_js:
+    - '9.11.2'
+before_script:
+    - yarn global add typescript webpack-cli
+script:
+    - yarn test
+    - yarn static

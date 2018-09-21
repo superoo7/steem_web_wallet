@@ -1,0 +1,44 @@
+@import "./Hamburger/Hamburger.scss";
+@import "./Dropdown/Dropdown.scss";
+@import "./Settings/Settings.scss";
+
+.Header__Container--Out {
+    background: $mintGreen;
+    margin-bottom: 1.45rem;
+    z-index: 2;
+}
+
+.Header__Container--In {
+    margin: 0 auto;
+    max-width: 960px;
+    padding: 1.45rem 1.0875rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.Header__Title {
+    font-family: $VT;
+    color: $whiteFont;
+    text-decoration: none;
+    font-size: 6rem;
+}
+
+.Header__Button {
+    padding: 1rem;
+
+    &:hover,
+    &:active {
+        background: lighten($mintGreen, 10%);
+        -webkit-transition: background-color 0.2s ease-out;
+        transition: background-color 0.2s ease-out;
+    }
+}
+
+.Header__Button--Active {
+    background: lighten($mintGreen, 10%);
+}
+
+.Header__Settings {
+    color: white;
+}

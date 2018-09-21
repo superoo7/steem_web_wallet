@@ -1,0 +1,50 @@
+$dropdown: #f9f9f9;
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.Dropdown__Content {
+    position: absolute;
+    background-color: $dropdown;
+    width: 50vw;
+    min-width: 30rem;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 0;
+    margin-top: 2rem;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+
+    a {
+        float: none;
+        color: black;
+        font-size: 3rem;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        background-color: $dropdown;
+        -webkit-transition: background-color 0.2s ease-out;
+        transition: background-color 0.2s ease-out;
+
+        &:hover {
+            background-color: darken($dropdown, 10%);
+        }
+    }
+}

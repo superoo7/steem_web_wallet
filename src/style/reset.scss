@@ -1,0 +1,52 @@
+// Reset
+html,
+body {
+    font-size: 62.5%;
+    font-family: $Roboto;
+    box-sizing: border-box;
+    background: #cccccc;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+}
+
+button,
+input {
+    overflow: visible;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+// button,
+// [type="button"],
+// [type="reset"],
+// [type="submit"] {
+//     -webkit-appearance: button;
+// }
+
+button {
+    background: transparent;
+    border: none;
+}
