@@ -3,14 +3,21 @@ import { Link } from '@reach/router';
 
 interface IDropdownProps {
     isHamburgerOpen: boolean;
+    toggleButton: () => void;
 }
 
 const Dropdown = (props: IDropdownProps) => {
     return (
         <div className="Dropdown__Content" style={{ display: props.isHamburgerOpen ? 'block' : 'none' }}>
-            <Link to="/">Link 1</Link>
-            <Link to="/">Link 1</Link>
-            <Link to="/">Link 1</Link>
+            <Link onClick={props.toggleButton} to="/">
+                Home
+            </Link>
+            <Link onClick={props.toggleButton} to="/faq">
+                FAQ
+            </Link>
+            <Link onClick={props.toggleButton} to="/">
+                Link 1
+            </Link>
         </div>
     );
 };

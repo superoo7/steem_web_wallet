@@ -38,7 +38,7 @@ export const signInFreshEpic: Epic<SignInActions, SignInActions, RootAction> = a
                 from(getItem(localForageKey.WALLET_AES_ACTIVE) as Promise<string>),
             ).pipe(
                 map(d => {
-                    if (d.length === 2) {
+                    if (d.length === 2 && !!d[0] && !!d[1]) {
                         return signInFreshFullfilled(d[0], d[1]);
                     }
                     return signInError();

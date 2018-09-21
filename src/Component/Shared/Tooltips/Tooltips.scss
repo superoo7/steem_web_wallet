@@ -1,0 +1,49 @@
+$Tooltip: rgba(darken($mintGreen, 10%), 0.95);
+
+/* Tooltip container */
+.Tooltips {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.Tooltips .Tooltips__Text {
+    visibility: hidden;
+    width: 14rem;
+    background-color: $Tooltip; // #555;
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem 0;
+    border-radius: 0.6rem;
+
+    /* Position the.Tooltips text */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -7rem;
+
+    /* Fade in.Tooltips */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.Tooltips .Tooltips__Text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -0.5rem;
+    border-width: 0.5rem;
+    border-style: solid;
+    border-color: $Tooltip transparent transparent transparent;
+}
+
+/* Show the.Tooltips text when you mouse over the.Tooltips container */
+.Tooltips:hover .Tooltips__Text {
+    visibility: visible;
+    opacity: 1;
+}

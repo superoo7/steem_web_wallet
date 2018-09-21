@@ -2,12 +2,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(170, 239, 204, 0.3);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100% // position: fixed;
+        // top: 0;
+        // left: 0;
+        // right: 0;
+        // bottom: 0;
 }
 
 .Settings__Modal {
@@ -28,8 +27,10 @@
 }
 
 .Settings__Open {
+
     i {
         color: white;
+        padding: 1rem;
 
         &:hover,
         &:active {
@@ -42,6 +43,7 @@
     display: flex;
     justify-content: flex-end;
     width: 100%;
+    cursor: pointer;
 
     i {
 

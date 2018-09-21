@@ -56,7 +56,7 @@ class Header extends React.Component<IHeaderProps, IState> {
                 <div className="Header__Container--In">
                     <div ref={this.setWrapperRef} className={`${isHamburgerOpen ? 'Header__Button--Active' : ''} Header__Button`}>
                         <Hamburger isHamburgerOpen={isHamburgerOpen} toggleButton={toggleHamburger} />
-                        <Dropdown isHamburgerOpen={isHamburgerOpen} />
+                        <Dropdown isHamburgerOpen={isHamburgerOpen} toggleButton={toggleHamburger} />
                     </div>
                     <Link className="Header__Title" to="/">
                         {isMobile ? '[SWW]' : 'Steem Web Wallet [SWW]'}

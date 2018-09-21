@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { RootAction, RootState } from 'Types';
 import { signInInit } from './SignInAction';
 import Loading from './Loading/Loading';
+import Login from '../Login';
 import { getIsLoading, getIsSignIn, getUsername } from './SignInSelector';
 
 interface ISignInProps {
@@ -29,7 +30,7 @@ class SignIn extends React.Component<ISignInProps, ISignInState> {
             return <div>SIGN IN as {username}</div>;
         }
 
-        return <div>NOT SIGN IN</div>;
+        return <Login />;
     }
 }
 

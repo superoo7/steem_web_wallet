@@ -10,6 +10,11 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
+        Background: 'black',
+        padding: '0px',
+    },
+    overlay: {
+        background: 'rgba(170, 239, 204, 0.3)',
     },
 };
 
@@ -48,20 +53,22 @@ class Settings extends React.Component<ISettingsProps, ISettingsState> {
                     <i className={`fas fa-sliders-h ${this.props.isMobile ? 'fa-5x' : 'fa-7x'}`} />
                 </div>
                 <Modal
-                    className="Settings__Box--Background"
                     isOpen={this.state.modalIsOpen}
                     contentLabel="Settings"
+                    style={customStyles}
                     onRequestClose={this.closeModal}
                 >
-                    <div className="Settings__Modal">
-                        <button className="Settings__Close" onClick={this.closeModal}>
-                            <i className="far fa-times-circle fa-7x" />
-                        </button>
-                        <h1 className="Settings__Modal--Title">Settings</h1>
-                        <p className="Settings__Modal--Content">
-                            <h3 className="Settings__Options">Steem API</h3>
-                            <Select options={selectOpt} />
-                        </p>
+                    <div className="Settings__Box--Background">
+                        <div className="Settings__Modal">
+                            <div className="Settings__Close" onClick={this.closeModal}>
+                                <i className="far fa-times-circle fa-7x" />
+                            </div>
+                            <h1 className="Settings__Modal--Title">Settings</h1>
+                            <p className="Settings__Modal--Content">
+                                <h3 className="Settings__Options">Steem API</h3>
+                                <Select options={selectOpt} />
+                            </p>
+                        </div>
                     </div>
                 </Modal>
             </React.Fragment>

@@ -1,7 +1,15 @@
+.Loading__Container {
+    margin: 2rem;
+    padding: 2rem;
+    background: lighten($mintGreen, 30%);
+    display: flex;
+    justify-content: center;
+}
+
 .Loading__Loader {
     border: 16px solid #f3f3f3;
     border-radius: 50%;
-    border-top: 16px solid #3498db;
+    border-top: 16px solid darken($mintGreen, 2%);
     width: 120px;
     height: 120px;
     -webkit-animation: spin 2s linear infinite;
