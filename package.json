@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server -d --env=dev --colors --hot --config webpack.dev.js",
-    "static": "webpack -p --output-path out --config webpack.dev.js",
+    "static": "webpack -p --output-path out --config webpack.prod.js",
     "test": "jest --silent",
     "typecheck": "tsc --noEmit"
   },
@@ -16,7 +16,6 @@
     "@reach/router": "^1.1.1",
     "@types/react-redux": "^6.0.9",
     "@types/react-select": "^2.0.3",
-    "@types/redux": "^3.6.0",
     "copy-webpack-plugin": "^4.5.2",
     "crypto-js": "^3.1.9-1",
     "dsteem": "^0.9.0",
