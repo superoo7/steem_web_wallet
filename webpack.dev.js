@@ -7,14 +7,14 @@ module.exports = {
         modules: [path.resolve(__dirname, "src"), 'node_modules'],
         extensions: [".ts", ".tsx", ".js", ".json"],
         alias: {
-            Utils: path.resolve('src/Utils/'),
-            Steem: path.resolve('src/Utils/Steem'),
-            Component: path.resolve('src/Component'),
-            "@entry": "entry",
-            "@common": "common"
+            Utils: path.resolve(__dirname, 'src/Utils/'),
+            Steem: path.resolve(__dirname, 'src/Utils/Steem'),
+            Component: path.resolve(__dirname, 'src/Component'),
+            // "@entry": "entry",
+            // "@common": "common"
         },
     },
-    entry: path.resolve('src/index.tsx'),
+    entry: path.resolve(__dirname, 'src/index.tsx'),
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),

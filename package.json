@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server -d --env=dev --colors --hot --config webpack.dev.js",
-    "static": "webpack -p --output-path out --config webpack.dev.js --silent",
+    "static": "webpack -p --output-path out --config webpack.dev.js",
     "test": "jest --silent",
     "typecheck": "tsc --noEmit"
   },
@@ -66,6 +66,6 @@
     "webpack-dev-server": "^3.1.8"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=9"
   }
 }
