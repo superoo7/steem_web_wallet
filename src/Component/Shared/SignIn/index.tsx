@@ -28,7 +28,7 @@ class SignIn extends React.Component<ISignInProps, ISignInState> {
         }
 
         if (isSignIn) {
-            return <Wallet />;
+            return <Wallet username={username} />;
         }
 
         return <Login />;
