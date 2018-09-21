@@ -1,9 +1,11 @@
 import { createStore, applyMiddleware, compose, ReducersMapObject } from 'redux';
 
 // Epics
-import { combineEpics, createEpicMiddleware } from 'redux-observable';
+import { combineEpics, createEpicMiddleware, Epic } from 'redux-observable';
 
-const Epics = combineEpics();
+import { signInEpic } from './Component/Shared/SignIn/SignInEpic';
+
+const Epics: Epic<any> = combineEpics(signInEpic);
 const epicMiddleware = createEpicMiddleware();
 
 // Combine Reducers

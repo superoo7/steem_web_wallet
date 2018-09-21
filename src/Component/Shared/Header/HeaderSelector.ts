@@ -1,4 +1,3 @@
-/// <reference path="../../../types.d.ts" />
 import Types from 'Types';
 import { createSelector } from 'reselect';
 

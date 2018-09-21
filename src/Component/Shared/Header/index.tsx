@@ -1,4 +1,3 @@
-/// <reference path="../../../types.d.ts" />
 import { RootAction, RootState } from 'Types';
 import * as React from 'react';
 import { connect } from 'react-redux';

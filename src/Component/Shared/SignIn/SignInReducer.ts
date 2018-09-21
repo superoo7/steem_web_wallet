@@ -3,14 +3,14 @@ import { Reducer } from 'redux';
 
 export type SignInState = {
     readonly username: string;
-    readonly aesKey: string;
+    readonly aesEncKey: string;
     readonly isLoading: boolean;
     readonly isSignIn: boolean;
 };
 
 export const signInInitialState: SignInState = {
     username: '',
-    aesKey: '',
+    aesEncKey: '',
     isLoading: false,
     isSignIn: false,
 };
@@ -21,7 +21,6 @@ export const signInReducer: Reducer<SignInState, SignInActions> = (state = signI
             return {
                 ...state,
                 username: action.payload.username,
-                aesKey: action.payload.key,
                 isLoading: true,
                 isSignIn: false,
             };
@@ -29,7 +28,21 @@ export const signInReducer: Reducer<SignInState, SignInActions> = (state = signI
             return {
                 ...state,
                 username: action.payload.username,
-                aesKey: action.payload.key,
+                aesEncKey: action.payload.aesEncKey,
+                isLoading: false,
+                isSignIn: true,
+            };
+        case SignInActionsType.SIGN_IN_FRESH:
+            return {
+                ...state,
+                isLoading: true,
+                isSignIn: false,
+            };
+        case SignInActionsType.SIGN_IN_FRESH_FULLFILLED:
+            return {
+                ...state,
+                username: action.payload.username,
+                aesEncKey: action.payload.aesEncKey,
                 isLoading: false,
                 isSignIn: true,
             };
