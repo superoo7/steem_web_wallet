@@ -1,31 +1,41 @@
-import { createStore, applyMiddleware, compose, ReducersMapObject } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { signInFresh } from 'Component/Shared/SignIn/SignInAction';
 
 // Epics
 import { combineEpics, createEpicMiddleware, Epic } from 'redux-observable';
 
 import { signInEpic, signInFreshEpic } from 'Component/Shared/SignIn/SignInEpic';
+import { getSteemProfileEpic } from 'Component/Shared/SignIn/Wallet/SteemProfileEpic';
 
-const Epics: Epic<any> = combineEpics(signInEpic, signInFreshEpic);
+const Epics: Epic<any> = combineEpics(signInEpic, signInFreshEpic, getSteemProfileEpic);
 const epicMiddleware = createEpicMiddleware();
 
 // Combine Reducers
 import { combineReducers } from 'redux';
 import { headerReducer, HeaderState, HeaderActions, headerInitialState } from 'Component/Shared/Header/HeaderReducer';
 import { signInInitialState, signInReducer, SignInState, SignInActions } from 'Component/Shared/SignIn/SignInReducer';
-import { signInFresh } from 'Component/Shared/SignIn/SignInAction';
+import {
+    steemProfileReducer,
+    SteemProfileState,
+    steemProfileInitialState,
+    SteemProfileActions,
+} from 'Component/Shared/SignIn/Wallet/SteemProfileReducer';
 
 interface reducerState {
     header: HeaderState;
     signIn: SignInState;
+    profiles: SteemProfileState;
 }
-type reducerAction = HeaderActions & SignInActions;
+type reducerAction = HeaderActions & SignInActions & SteemProfileActions;
 const initialState = {
     header: headerInitialState,
     signIn: signInInitialState,
+    profiles: steemProfileInitialState,
 };
 export const rootReducer = combineReducers<reducerState, reducerAction>({
     header: headerReducer,
     signIn: signInReducer,
+    profiles: steemProfileReducer,
 });
 
 // Combine Epics

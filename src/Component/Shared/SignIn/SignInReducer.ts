@@ -1,5 +1,5 @@
-import { SignInActionsType, SignInActions } from './SignInAction';
 import { Reducer } from 'redux';
+import { SignInActionsType, SignInActions } from './SignInAction';
 
 export type SignInState = {
     readonly username: string;

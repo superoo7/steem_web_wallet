@@ -1,4 +1,4 @@
-import { RootAction } from 'types';
+import { RootAction } from 'Types';
 import { Epic } from 'redux-observable';
 import { isOfType } from 'typesafe-actions';
 import { map, filter, mergeMap, flatMap, catchError } from 'rxjs/operators';

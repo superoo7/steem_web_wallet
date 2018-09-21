@@ -10,6 +10,7 @@ export interface SteemClass {
     setClient: (api: API) => void;
     checkConnection: () => Observable<any>;
     findAccount: (acc: string) => Promise<any>;
+    findAccounts: (acc: string[]) => Promise<any>;
     getDynamicGlobalProperties: () => Promise<any>;
 }
 
@@ -40,6 +41,7 @@ class Steem implements SteemClass {
     };
 
     findAccount = (acc: string) => this.client.database.call('get_accounts', [[acc]]);
+    findAccounts = (acc: string[]) => this.client.database.call('get_accounts', [acc]);
 }
 
 export default Steem;

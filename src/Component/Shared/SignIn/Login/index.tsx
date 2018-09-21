@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Tooltips from '../Tooltips';
+import Tooltips from '../../Tooltips';
 import { Dispatch, bindActionCreators } from 'redux';
 import { RootAction } from 'Types';
-import { signInInit } from '../SignIn/SignInAction';
+import { signInInit } from '../SignInAction';
 import { connect } from 'react-redux';
 
 interface ILoginProps {
@@ -84,7 +84,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 } else if (value.search(/[a-z]/) < 0) {
                     message = 'Your password needs a lower case letter';
                 } else if (value.search(/[A-Z]/) < 0) {
-                    message = 'Your password needs an uppser case letter';
+                    message = 'Your password needs an upper case letter';
                 } else if (value.search(/[0-9]/) < 0) {
                     message = 'Your password needs a number';
                 } else {
