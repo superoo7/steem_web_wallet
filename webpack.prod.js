@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 
 module.exports = {
     resolve: {
@@ -39,6 +41,7 @@ module.exports = {
         ]
     },
     plugins: [
+        // new BundleAnalyzerPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.EnvironmentPlugin({
             'NODE_ENV': 'development'

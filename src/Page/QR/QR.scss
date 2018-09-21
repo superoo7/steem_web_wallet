@@ -1,0 +1,18 @@
+.QR__Reader--Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.QR__Reader {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 50rem;
+}
+
+.QR__Result {
+    padding: 1rem;
+    margin: 0 auto;
+    font-size: $Heading1;
+}
