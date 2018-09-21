@@ -15,8 +15,8 @@ const Dropdown = (props: IDropdownProps) => {
             <Link onClick={props.toggleButton} to="/faq">
                 FAQ
             </Link>
-            <Link onClick={props.toggleButton} to="/">
-                Link 1
+            <Link onClick={props.toggleButton} to="/qr">
+                QR Reader
             </Link>
         </div>
     );

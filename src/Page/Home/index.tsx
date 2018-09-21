@@ -4,11 +4,7 @@ import SignIn from 'Component/Shared/SignIn';
 
 class HomePage extends React.Component<RouteComponentProps> {
     render() {
-        return (
-            <React.Fragment>
-                <SignIn />
-            </React.Fragment>
-        );
+        return <SignIn />;
     }
 }
 
