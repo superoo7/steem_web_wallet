@@ -32,7 +32,6 @@ class Account implements AccountClass {
             map(d => {
                 const type = d.type;
                 const encryptedMessage = this.encryptData(password, aesPassword);
-
                 return {
                     type: type,
                     encryptedMessage: encryptedMessage,

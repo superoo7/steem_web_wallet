@@ -1,8 +1,8 @@
 import { RootAction } from 'types';
 import { Epic } from 'redux-observable';
 import { isOfType } from 'typesafe-actions';
-import { map, filter, mergeMap, flatMap } from 'rxjs/operators';
-import { from, forkJoin } from 'rxjs';
+import { map, filter, mergeMap, flatMap, catchError } from 'rxjs/operators';
+import { from, forkJoin, of } from 'rxjs';
 import { setItem, getItem } from 'localforage';
 import { account } from 'Utils/Steem';
 import { localForageKey } from 'Utils/LocalForage';
@@ -24,6 +24,10 @@ export const signInEpic: Epic<SignInActions, SignInActions, RootAction> = action
                             return signInFullfilled(username, d.encryptedMessage);
                         }),
                     );
+                }),
+                catchError(err => {
+                    alert(err);
+                    return of(signInError());
                 }),
             );
         }),
