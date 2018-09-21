@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server -d --env=dev --colors --hot --config webpack.dev.js",
-    "static": "webpack -p --output-path out --config webpack.dev.js",
+    "static": "webpack -p --output-path out --config webpack.dev.js --silent",
     "test": "jest --silent",
-    "typecheck": "tsc --noEmit index.tsx"
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",

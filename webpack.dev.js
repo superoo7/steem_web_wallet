@@ -9,6 +9,7 @@ module.exports = {
         alias: {
             Utils: path.resolve('src/Utils/'),
             Steem: path.resolve('src/Utils/Steem'),
+            Component: path.resolve('src/Component'),
             "@entry": "entry",
             "@common": "common"
         },

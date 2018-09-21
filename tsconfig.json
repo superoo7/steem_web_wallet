@@ -4,6 +4,7 @@
         "paths": {
             "Utils/*": ["Utils/*"],
             "Steem/*": ["Utils/Steem/*"],
+            "Component/*": ["Component/*"],
             "Types": ["types.d.ts"],
             "@entry": ["entry"],
             "@common": ["common"]
