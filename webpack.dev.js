@@ -61,8 +61,17 @@ module.exports = {
             {
                 from: path.resolve(__dirname, 'public/_redirects')
             },
+            {
+                from: path.resolve(__dirname, 'public/manifest.json')
+            },
+            {
+                from: path.resolve(__dirname, 'public/favicon.ico')
+            },
+            {
+                from: path.resolve(__dirname, 'public/images'),
+                to: 'images'
+            },
         ]),
         // { from: path.resolve(__dirname, 'browserconfig.xml'), to: 'assets' },
-        // { from: path.resolve(__dirname, 'src/icons'), to: 'assets/icons' }
     ]
 }
