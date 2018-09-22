@@ -13,24 +13,24 @@ const Dropdown = (props: IDropdownProps) => {
             <Link onClick={props.toggleButton} to="/">
                 Home
             </Link>
-            <Link onClick={props.toggleButton} to="/faq">
-                FAQ
-            </Link>
-            <Link onClick={props.toggleButton} to="/qr">
-                QR Reader
-            </Link>
             {props.isSignIn ? (
                 <React.Fragment>
+                    <Link onClick={props.toggleButton} to="/transfer">
+                        Make Transactions
+                    </Link>
                     <Link onClick={props.toggleButton} to="/settings">
                         Settings
-                    </Link>
-                    <Link onClick={props.toggleButton} to="/transfer">
-                        Transfer
                     </Link>
                 </React.Fragment>
             ) : (
                 undefined
             )}
+            <Link onClick={props.toggleButton} to="/qr">
+                QR Reader
+            </Link>
+            <Link onClick={props.toggleButton} to="/faq">
+                FAQ
+            </Link>
         </div>
     );
 };

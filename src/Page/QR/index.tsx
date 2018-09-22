@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps, Link } from '@reach/router';
-import { navigate } from '@reach/router';
+import { RouteComponentProps, Link, navigate } from '@reach/router';
 const QrReader = require('react-qr-reader');
 
 interface IQRState {
