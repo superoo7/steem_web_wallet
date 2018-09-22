@@ -81,7 +81,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                     <h2>{username}</h2>
                 </div>
 
-                <div>
+                <div className="Wallet__Conatiner--Card">
                     <div className="Card Card__Steem">
                         <span>STEEM: {parseFloat(prof.balance)} </span>
                     </div>

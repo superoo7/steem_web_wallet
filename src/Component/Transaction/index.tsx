@@ -9,6 +9,8 @@ import { getProfile } from 'Component/Shared/SignIn/Wallet/SteemProfileSelector'
 import { bindActionCreators, Dispatch } from 'redux';
 import { getAuthorProfiles } from 'Component/Shared/SignIn/Wallet/SteemProfileAction';
 import Loading from 'Component/Shared/SignIn/Loading/Loading';
+import Select from 'react-select';
+import { ValueType } from 'react-select/lib/types';
 
 interface ITransactionProps {
     currency: string;
@@ -40,11 +42,13 @@ interface ITransactionState {
     errorMessage: {
         from: string;
         to: string;
+        amount: string;
     };
     from: string;
     to: string;
     amount: string;
     currency: string;
+    selectCurrency: { label: string; value: string };
 }
 
 class Transaction extends React.Component<ITransactionProps, ITransactionState> {
@@ -52,37 +56,81 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
         errorMessage: {
             from: '',
             to: '',
+            amount: '',
         },
         from: '',
         to: this.props.to,
-        amount: this.props.amount,
-        currency: this.props.currency,
+        amount: this.props.amount || '0.000',
+        currency: this.props.currency || 'STEEM',
+        selectCurrency: {
+            label: this.props.currency || 'STEEM',
+            value: this.props.currency || 'STEEM',
+        },
     };
 
     componentDidMount() {
-        this.props.getAuthorProfiles([this.props.to]);
+        if (!this.props.profile.profiles[this.props.to]) {
+            this.props.getAuthorProfiles([this.props.to]);
+        } else if (!this.props.profile.profiles[this.props.username]) {
+            this.props.getAuthorProfiles([this.props.username]);
+        }
         setTimeout(() => {
             if (!this.props.isSignIn && !this.props.username) {
                 toastr.error('Not Authenticated', 'You are not signed in!');
                 // navigate('/');
             }
-        }, 1000);
+        }, 2000);
     }
 
     handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const s = {};
         const name = e.target.name;
-        const value = e.target.value;
-        s[name] = value;
+        let value = e.target.value;
+
         if (name === 'to') {
             if (!this.props.profile.profiles[value]) {
                 this.props.getAuthorProfiles([value]);
             }
         }
+
+        s[name] = value;
         this.setState(s, () => this.validateField(name, value));
     };
 
-    validateField = (name: string, value: string) => {};
+    handleSelectChange = (value: ValueType<{ value: string; label: string }>) => {
+        const v: any = value;
+        if (v.value === 'STEEM' || v.value === 'SBD') {
+            this.setState({
+                currency: v.value,
+                selectCurrency: v,
+            });
+        } else {
+            this.setState({
+                errorMessage: {
+                    ...this.state.errorMessage,
+                    currency: 'Invalid currency',
+                },
+            });
+        }
+    };
+
+    validateField = (name: string, value: string) => {
+        let message = '';
+        switch (name) {
+            case 'to':
+                const profiles = this.props.profile.profiles;
+                const prof = profiles[value];
+                if (!prof) {
+                    message = 'Profile not found';
+                }
+                this.setState({ errorMessage: { ...this.state.errorMessage, to: message } });
+
+                break;
+            case 'amount':
+                // Insufficient funds
+                break;
+        }
+    };
 
     render() {
         const { to, amount, currency } = this.state;
@@ -94,6 +142,14 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
             <div className="Login__Container--Outer">
                 <div className="Login__Container">
                     <h1 className="Login__Title">Transfer</h1>
+                    {!!profiles[username] ? (
+                        <div>
+                            <p>{`${parseFloat(profiles[username].balance) || '-'} STEEM`}</p>
+                            <p>{`${parseFloat(profiles[username].sbd_balance)} SBD` || '-'}</p>{' '}
+                        </div>
+                    ) : (
+                        undefined
+                    )}
                     <form>
                         <div className="Form__Container">
                             {this.state.errorMessage.from ? (
@@ -147,6 +203,34 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                                 value={to}
                                 required
                             />
+                            {this.state.errorMessage.amount ? (
+                                <b style={{ color: 'red' }}>{this.state.errorMessage.amount}</b>
+                            ) : (
+                                undefined
+                            )}
+                            <label>
+                                <b>
+                                    <Tooltips hoverText={'Amount'} tooltipsText={'Amount of Steem/SBD'} />
+                                </b>
+                            </label>
+                            <input
+                                onChange={this.handleChange}
+                                type="number"
+                                placeholder="Enter To"
+                                name="amount"
+                                value={amount}
+                                required
+                            />
+                            <label>
+                                <b>
+                                    <Tooltips hoverText="Currency" tooltipsText="STEEM or SBD" />
+                                </b>
+                                <Select
+                                    onChange={this.handleSelectChange}
+                                    options={[{ value: 'STEEM', label: 'STEEM' }, { value: 'SBD', label: 'SBD' }]}
+                                    value={this.state.selectCurrency}
+                                />
+                            </label>
                         </div>
                     </form>
                 </div>

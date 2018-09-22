@@ -45,7 +45,7 @@ export const rootReducer = combineReducers<reducerState, reducerAction>({
 // Combine Epics
 
 // Redux Dev Tools
-const composeEnhancers = (<any>window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = (process.env.NODE_ENV !== 'production' && (<any>window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 // create store
 const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(epicMiddleware)));
 
