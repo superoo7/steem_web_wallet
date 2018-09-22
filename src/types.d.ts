@@ -9,3 +9,8 @@ declare module 'Types' {
     export type RootState = StateType<typeof rootReducer>;
     export type RootAction = HeaderActions & SignInActions & SteemProfileActions; //& ToastrActionCreators;
 }
+
+// {
+//     const _a: any;
+//     export = _a;
+// }

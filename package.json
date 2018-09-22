@@ -34,6 +34,7 @@
     "redux-observable": "^1.0.0",
     "reselect": "^3.0.1",
     "rxjs": "^6.3.2",
+    "snarkdown": "^1.2.2",
     "typesafe-actions": "^2.0.4",
     "webpack-bundle-analyzer": "^3.0.2",
     "whatwg-fetch": "^3.0.0"
