@@ -43,7 +43,18 @@ module.exports = {
     },
     plugins: [
         // new BundleAnalyzerPlugin(),
-        new OfflinePlugin(),
+        new OfflinePlugin({
+            externals: [
+                '/'
+            ],
+            appShell: '/',
+            AppCache: {
+                FALLBACK: {
+                    '/': '/offline-page.html'
+                }
+            }
+
+        }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.EnvironmentPlugin({
             'NODE_ENV': 'development'

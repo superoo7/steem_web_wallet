@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const OfflinePlugin = require('offline-plugin');
 
 module.exports = {
     resolve: {
@@ -51,6 +52,12 @@ module.exports = {
         historyApiFallback: true
     },
     plugins: [
+        new OfflinePlugin({
+            externals: [
+                '/'
+            ],
+            appShell: '/',
+        }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.EnvironmentPlugin({
             'NODE_ENV': 'development'

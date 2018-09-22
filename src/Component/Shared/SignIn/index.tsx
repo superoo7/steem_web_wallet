@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { RootAction, RootState } from 'Types';
-import { signInInit } from './SignInAction';
+import { signInInit, signOut } from './SignInAction';
 import Loading from './Loading/Loading';
 import Login from './Login';
 import Wallet from './Wallet';
@@ -13,13 +13,12 @@ interface ISignInProps {
     isSignIn: boolean;
     username: string;
     signInInit: (username: string, activeKey: string, password: string) => void;
+    signOut: () => void;
 }
 
 interface ISignInState {}
 
 class SignIn extends React.Component<ISignInProps, ISignInState> {
-    componentDidMount() {}
-
     render() {
         const { isLoading, isSignIn, username } = this.props;
 
@@ -28,7 +27,14 @@ class SignIn extends React.Component<ISignInProps, ISignInState> {
         }
 
         if (isSignIn) {
-            return <Wallet username={username} />;
+            return (
+                <div className="Wallet__Container--Main">
+                    <Wallet username={username} />
+                    <button className="Btn__Signout" onClick={() => this.props.signOut()}>
+                        Sign out
+                    </button>
+                </div>
+            );
         }
 
         return <Login />;
@@ -45,6 +51,7 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
     bindActionCreators(
         {
             signInInit: signInInit,
+            signOut: signOut,
         },
         dispatch,
     );

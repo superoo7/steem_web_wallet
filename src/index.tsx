@@ -5,7 +5,10 @@ import { Provider } from 'react-redux';
 import 'whatwg-fetch';
 
 import * as OfflinePluginRuntime from 'offline-plugin/runtime';
-OfflinePluginRuntime.install();
+OfflinePluginRuntime.install({
+    onUpdateReady: () => OfflinePluginRuntime.applyUpdate(),
+    onUpdated: () => location.reload(),
+});
 
 import Router from './Router';
 import './index.scss';

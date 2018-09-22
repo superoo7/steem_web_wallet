@@ -49,7 +49,9 @@ export const signInReducer: Reducer<SignInState, SignInActions> = (state = signI
         case SignInActionsType.SIGN_IN_ERROR:
             return signInInitialState;
         case SignInActionsType.SIGN_OUT:
-            return state;
+            return { ...state, isLoading: true };
+        case SignInActionsType.SIGN_OUT_FULLFILLED:
+            return { ...state, isSignIn: false, isLoading: false };
         default:
             return state;
     }

@@ -1,3 +1,19 @@
 @import "./Loading/Loading.scss";
 @import "./Login/Login.scss";
 @import "./Wallet/Wallet.scss";
+
+// Sign out btn
+.Wallet__Container--Main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Btn__Signout {
+    margin-top: 1rem;
+    padding: 1.3rem;
+    background: red;
+    color: white;
+    font-size: $Heading1;
+}

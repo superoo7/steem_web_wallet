@@ -4,10 +4,10 @@ import { signInFresh } from 'Component/Shared/SignIn/SignInAction';
 // Epics
 import { combineEpics, createEpicMiddleware, Epic } from 'redux-observable';
 
-import { signInEpic, signInFreshEpic } from 'Component/Shared/SignIn/SignInEpic';
+import { signInEpic, signInFreshEpic, signOutEpic } from 'Component/Shared/SignIn/SignInEpic';
 import { getSteemProfileEpic } from 'Component/Shared/SignIn/Wallet/SteemProfileEpic';
 
-const Epics: Epic<any> = combineEpics(signInEpic, signInFreshEpic, getSteemProfileEpic);
+const Epics: Epic<any> = combineEpics(signInEpic, signInFreshEpic, signOutEpic, getSteemProfileEpic);
 const epicMiddleware = createEpicMiddleware();
 
 // Combine Reducers
