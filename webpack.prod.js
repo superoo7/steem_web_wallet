@@ -6,6 +6,7 @@ const OfflinePlugin = require('offline-plugin');
 
 
 module.exports = {
+    stats: 'errors-only',
     resolve: {
         modules: [path.resolve(__dirname, "src"), 'node_modules'],
         extensions: [".ts", ".tsx", ".js", ".json"],
@@ -48,12 +49,6 @@ module.exports = {
                 '/'
             ],
             appShell: '/',
-            AppCache: {
-                FALLBACK: {
-                    '/': '/offline-page.html'
-                }
-            }
-
         }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.EnvironmentPlugin({

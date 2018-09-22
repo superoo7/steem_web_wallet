@@ -23,3 +23,20 @@
         margin: 0.5rem;
     }
 }
+
+.Checkbox__Container {
+    display: flex;
+}
+
+.Btn__Submit {
+    border: 0.1rem solid lighten($mintGreen, 10%);
+    background: $mintGreen;
+    color: white;
+
+    &:disabled {
+        border: 0.1rem solid darken(grey, 10%);
+        background: grey;
+        color: lighten(grey, 30%);
+    }
+
+}

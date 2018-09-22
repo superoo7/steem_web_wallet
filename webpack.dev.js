@@ -46,18 +46,19 @@ module.exports = {
         ]
     },
     devServer: {
+        stats: 'errors-only',
         hot: true,
         contentBase: path.join(__dirname, 'dist'),
         publicPath: '/',
         historyApiFallback: true
     },
     plugins: [
-        new OfflinePlugin({
-            externals: [
-                '/'
-            ],
-            appShell: '/',
-        }),
+        // new OfflinePlugin({
+        //     externals: [
+        //         '/'
+        //     ],
+        //     appShell: '/',
+        // }),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.EnvironmentPlugin({
             'NODE_ENV': 'development'

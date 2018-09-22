@@ -21,6 +21,7 @@ interface ILoginState {
     password: string;
     retyped_password: string;
     active: string;
+    understand: boolean;
 }
 
 class Login extends React.Component<ILoginProps, ILoginState> {
@@ -35,6 +36,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         password: '',
         retyped_password: '',
         active: '',
+        understand: false,
     };
 
     passwordRef: React.Ref<HTMLInputElement>;
@@ -47,6 +49,12 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         this.retypedPasswordRef = React.createRef();
         this.activeKeyRef = React.createRef();
     }
+
+    handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.checked;
+        console.log(value);
+        this.setState({ understand: value });
+    };
 
     handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -207,7 +215,14 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                             value={this.state.retyped_password}
                             required
                         />
-                        <button style={{ border: '1px solid grey' }} type="submit">
+                        <label className="Checkbox__Container">
+                            <input onChange={this.handleCheckboxChange} name="understand" type="checkbox" />
+                            <span>
+                                I understand that there is no way SWW able to retrace my password, and I will take full
+                                responsibility on my password.
+                            </span>
+                        </label>
+                        <button className="Btn__Submit" type="submit" disabled={!this.state.understand}>
                             Login
                         </button>
                     </div>
