@@ -14,6 +14,8 @@ const epicMiddleware = createEpicMiddleware();
 import { combineReducers } from 'redux';
 import { headerReducer, HeaderState, HeaderActions, headerInitialState } from 'Component/Shared/Header/HeaderReducer';
 import { signInInitialState, signInReducer, SignInState, SignInActions } from 'Component/Shared/SignIn/SignInReducer';
+import { reducer as toastrReducer, ToastrState } from 'react-redux-toastr';
+
 import {
     steemProfileReducer,
     SteemProfileState,
@@ -25,6 +27,7 @@ interface reducerState {
     header: HeaderState;
     signIn: SignInState;
     profiles: SteemProfileState;
+    toastr: ToastrState;
 }
 type reducerAction = HeaderActions & SignInActions & SteemProfileActions;
 const initialState = {
@@ -36,6 +39,7 @@ export const rootReducer = combineReducers<reducerState, reducerAction>({
     header: headerReducer,
     signIn: signInReducer,
     profiles: steemProfileReducer,
+    toastr: toastrReducer,
 });
 
 // Combine Epics

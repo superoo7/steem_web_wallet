@@ -91,7 +91,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                     <div className="Card Card__QR">
                         <Select options={selectOpt} onChange={this.handleChange} value={selectedOption} />
                         <QRCode className="QR" value={selectedOption.value} />
-                        <input className="QR__Text" value={selectedOption.value} />
+                        <textarea className="QR__Text" value={selectedOption.value} disabled />
                     </div>
                 </div>
             </div>

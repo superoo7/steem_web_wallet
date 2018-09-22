@@ -3,11 +3,10 @@
   "short_name": "SWW",
   "theme_color": "#1BBC9B",
   "background_color": "#1bbc9b",
-  "display": "browser",
+  "display": "standalone",
   "Scope": "/",
   "start_url": "/",
-  "icons": [
-    {
+  "icons": [{
       "src": "images/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png"

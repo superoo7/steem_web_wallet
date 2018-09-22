@@ -1,9 +1,10 @@
 import { RootAction } from 'Types';
 import { Epic } from 'redux-observable';
 import { isOfType } from 'typesafe-actions';
-import { map, filter, mergeMap, flatMap, catchError } from 'rxjs/operators';
+import { map, filter, mergeMap, tap, catchError } from 'rxjs/operators';
 import { from, forkJoin, of } from 'rxjs';
 import { setItem, getItem } from 'localforage';
+import { toastr } from 'react-redux-toastr';
 import { account } from 'Utils/Steem';
 import { localForageKey } from 'Utils/LocalForage';
 
@@ -26,7 +27,7 @@ export const signInEpic: Epic<SignInActions, SignInActions, RootAction> = action
                     );
                 }),
                 catchError(err => {
-                    alert(err);
+                    toastr.error('Error on logging in', `${err.message}`);
                     return of(signInError());
                 }),
             );
@@ -41,6 +42,11 @@ export const signInFreshEpic: Epic<SignInActions, SignInActions, RootAction> = a
                 from(getItem(localForageKey.USERNAME) as Promise<string>),
                 from(getItem(localForageKey.WALLET_AES_ACTIVE) as Promise<string>),
             ).pipe(
+                tap(d => {
+                    if (d.length === 2 && !!d[0] && !!d[1]) {
+                        return toastr.success(`Successfully signed in!`, `Welcome ${d[0]}`);
+                    }
+                }),
                 map(d => {
                     if (d.length === 2 && !!d[0] && !!d[1]) {
                         return signInFreshFullfilled(d[0], d[1]);

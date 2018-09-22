@@ -1,7 +1,21 @@
+// Style
 @import 'style/font.scss';
 @import 'style/variable.scss';
 @import 'style/reset.scss';
 @import 'style/default.scss';
+
+// Library
+@import 'node_modules/react-redux-toastr/src/styles/index.scss';
+
+// OVERRIDE
+.rrt-middle-container {
+    font-family: $VT !important;
+    font-size: 3rem !important;
+
+    .rrt-title {
+        font-size: 3.5rem !important;
+    }
+}
 
 // Pages
 @import 'Page/QR/QR.scss';

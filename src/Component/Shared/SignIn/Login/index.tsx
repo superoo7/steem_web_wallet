@@ -1,9 +1,10 @@
 import * as React from 'react';
-import Tooltips from '../../Tooltips';
 import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { toastr } from 'react-redux-toastr';
+import Tooltips from '../../Tooltips';
 import { RootAction } from 'Types';
 import { signInInit } from '../SignInAction';
-import { connect } from 'react-redux';
 
 interface ILoginProps {
     signInInit: (username: string, activeKey: string, password: string) => void;
@@ -63,7 +64,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
         ) {
             this.props.signInInit(this.state.username, this.state.active, this.state.password);
         } else {
-            alert('Not completed yet');
+            toastr.error('Error on logging in', 'Sign in form not completed yet.');
         }
     };
 
