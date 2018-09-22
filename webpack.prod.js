@@ -70,6 +70,10 @@ module.exports = {
                 from: path.resolve(__dirname, 'public/images'),
                 to: 'images'
             },
+            {
+                from: path.resolve(__dirname, 'public/sounds'),
+                to: 'sounds'
+            },
         ]),
         // { from: path.resolve(__dirname, 'browserconfig.xml'), to: 'assets' },
         // { from: path.resolve(__dirname, 'src/icons'), to: 'assets/icons' }

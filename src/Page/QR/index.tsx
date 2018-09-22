@@ -9,13 +9,21 @@ interface IQRState {
 }
 
 class QRPage extends React.Component<RouteComponentProps, IQRState> {
+    audio: HTMLAudioElement;
+
     state = {
         delay: 300,
         result: 'No result',
     };
 
+    constructor(props: RouteComponentProps) {
+        super(props);
+        this.audio = new Audio(`${window.location.origin}/sounds/notification.wav`);
+    }
+
     handleScan = (data: any) => {
         if (data) {
+            this.audio.play();
             this.setState({
                 result: data,
             });
@@ -24,6 +32,9 @@ class QRPage extends React.Component<RouteComponentProps, IQRState> {
                 const temp = data.split(`${window.location.origin}`);
                 const url = temp.slice(1, temp.length).join('');
                 navigate(url);
+            } else if (data.match(/^[a-z][a-z0-9\-\.]+$/)) {
+                console.log(data.match(/^[a-z][a-z0-9\-\.]+$/));
+                navigate(`/profile/${data}`);
             }
         }
     };

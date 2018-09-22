@@ -110,7 +110,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 this.setState({ errorMessage: { ...this.state.errorMessage, retyped_password: message } });
                 break;
             case 'username':
-                if (!value.match(/[a-z][a-z0-9\-]+[a-z0-9]/g)) {
+                if (!value.match(/^[a-z][a-z0-9\-\.]+$/)) {
                     message = 'Invalid Steem Username';
                 } else {
                     message = '';
