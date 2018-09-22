@@ -29,7 +29,7 @@ class FAQPage extends React.Component<RouteComponentProps, IFAQState> {
 
         return (
             <div className="Markdown__Container">
-                <div dangerouslySetInnerHTML={{ __html: snarkdown(this.state.md) }} />
+                <div className="Markdown__Content" dangerouslySetInnerHTML={{ __html: snarkdown(this.state.md) }} />
             </div>
         );
     }

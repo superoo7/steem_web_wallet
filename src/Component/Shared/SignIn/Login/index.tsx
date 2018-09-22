@@ -130,103 +130,105 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
     render() {
         return (
-            <div className="Login__Container">
-                <h1 className="Login__Title">Login</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="Form__Container">
-                        {this.state.errorMessage.username ? (
-                            <b style={{ color: 'red' }}>{this.state.errorMessage.username}</b>
-                        ) : (
-                            undefined
-                        )}
-                        <label>
-                            <b>
-                                <Tooltips hoverText={'Username'} tooltipsText={'Your Steemit Username.'} />
-                            </b>
-                        </label>
-                        <input
-                            onChange={this.handleChange}
-                            type="text"
-                            placeholder="Enter Username"
-                            name="username"
-                            value={this.state.username}
-                            required
-                        />
-                        {this.state.errorMessage.active ? (
-                            <b style={{ color: 'red' }}>{this.state.errorMessage.active}</b>
-                        ) : (
-                            undefined
-                        )}
-                        <label>
-                            <b>
-                                <Tooltips
-                                    hoverText={'Steem Active Key'}
-                                    tooltipsText={'Use Steem Active Key to login to the wallet.'}
-                                />
-                            </b>
-                        </label>
-                        <input
-                            ref={this.activeKeyRef}
-                            onChange={this.handleChange}
-                            type="password"
-                            placeholder="Enter Steem Active Key"
-                            name="active"
-                            value={this.state.active}
-                            required
-                        />
+            <div className="Login__Container--Outer">
+                <div className="Login__Container">
+                    <h1 className="Login__Title">Login</h1>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="Form__Container">
+                            {this.state.errorMessage.username ? (
+                                <b style={{ color: 'red' }}>{this.state.errorMessage.username}</b>
+                            ) : (
+                                undefined
+                            )}
+                            <label>
+                                <b>
+                                    <Tooltips hoverText={'Username'} tooltipsText={'Your Steemit Username.'} />
+                                </b>
+                            </label>
+                            <input
+                                onChange={this.handleChange}
+                                type="text"
+                                placeholder="Enter Username"
+                                name="username"
+                                value={this.state.username}
+                                required
+                            />
+                            {this.state.errorMessage.active ? (
+                                <b style={{ color: 'red' }}>{this.state.errorMessage.active}</b>
+                            ) : (
+                                undefined
+                            )}
+                            <label>
+                                <b>
+                                    <Tooltips
+                                        hoverText={'Steem Active Key'}
+                                        tooltipsText={'Use Steem Active Key to login to the wallet.'}
+                                    />
+                                </b>
+                            </label>
+                            <input
+                                ref={this.activeKeyRef}
+                                onChange={this.handleChange}
+                                type="password"
+                                placeholder="Enter Steem Active Key"
+                                name="active"
+                                value={this.state.active}
+                                required
+                            />
 
-                        {this.state.errorMessage.password ? (
-                            <b style={{ color: 'red' }}>{this.state.errorMessage.password}</b>
-                        ) : (
-                            undefined
-                        )}
+                            {this.state.errorMessage.password ? (
+                                <b style={{ color: 'red' }}>{this.state.errorMessage.password}</b>
+                            ) : (
+                                undefined
+                            )}
 
-                        <label>
-                            <b>
-                                <Tooltips
-                                    hoverText={'Password'}
-                                    tooltipsText={'Choose a secure password to encrypt your steem active key.'}
-                                />
-                            </b>
-                        </label>
-                        <input
-                            ref={this.passwordRef}
-                            onChange={this.handleChange}
-                            type="password"
-                            placeholder="Enter Password"
-                            name="password"
-                            value={this.state.password}
-                            required
-                        />
-                        {this.state.errorMessage.retyped_password ? (
-                            <b style={{ color: 'red' }}>{this.state.errorMessage.retyped_password}</b>
-                        ) : (
-                            undefined
-                        )}
-                        <label>
-                            <b>Retype Password</b>
-                        </label>
-                        <input
-                            ref={this.retypedPasswordRef}
-                            onChange={this.handleChange}
-                            type="password"
-                            placeholder="Retype your Password"
-                            name="retyped_password"
-                            value={this.state.retyped_password}
-                            required
-                        />
-                        <label className="Checkbox__Container">
-                            <input onChange={this.handleCheckboxChange} name="understand" type="checkbox" />
-                            <span>
-                                I understand that there is no way SWW able to retrace my password, and I will take full
-                                responsibility on my password.
-                            </span>
-                        </label>
-                        <button className="Btn__Submit" type="submit" disabled={!this.state.understand}>
-                            Login
-                        </button>
-                    </div>
-                </form>
+                            <label>
+                                <b>
+                                    <Tooltips
+                                        hoverText={'Password'}
+                                        tooltipsText={'Choose a secure password to encrypt your steem active key.'}
+                                    />
+                                </b>
+                            </label>
+                            <input
+                                ref={this.passwordRef}
+                                onChange={this.handleChange}
+                                type="password"
+                                placeholder="Enter Password"
+                                name="password"
+                                value={this.state.password}
+                                required
+                            />
+                            {this.state.errorMessage.retyped_password ? (
+                                <b style={{ color: 'red' }}>{this.state.errorMessage.retyped_password}</b>
+                            ) : (
+                                undefined
+                            )}
+                            <label>
+                                <b>Retype Password</b>
+                            </label>
+                            <input
+                                ref={this.retypedPasswordRef}
+                                onChange={this.handleChange}
+                                type="password"
+                                placeholder="Retype your Password"
+                                name="retyped_password"
+                                value={this.state.retyped_password}
+                                required
+                            />
+                            <label className="Checkbox__Container">
+                                <input onChange={this.handleCheckboxChange} name="understand" type="checkbox" />
+                                <span>
+                                    I understand that there is no way SWW able to retrace my password, and I will take full
+                                    responsibility on my password.
+                                </span>
+                            </label>
+                            <button className="Btn__Submit" type="submit" disabled={!this.state.understand}>
+                                Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         );
     }

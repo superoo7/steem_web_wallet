@@ -1,7 +1,13 @@
+.Login__Container--Outer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 1rem;
+}
+
 .Login__Container {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 100rem;
-    margin: 1rem;
+    max-width: 80rem;
 
     background: rgba(lighten($mintGreen, 30%), 0.7);
     padding: 1rem;
