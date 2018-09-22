@@ -1,0 +1,10 @@
+.Button__Transaction {
+    margin-top: 1rem;
+    padding: 1.3rem;
+    background: lighten($mintGreen, 10%);
+    color: white;
+    font-size: $Heading1;
+    text-decoration: none;
+    max-width: 30rem;
+    text-align: center;
+}

@@ -10,12 +10,15 @@ import Hamburger from './Hamburger/Hamburger';
 import Dropdown from './Dropdown/Dropdown';
 import Settings from './Settings/Settings';
 import { enquireScreen } from 'Utils/enquire';
+import { getIsSignIn } from 'Component/Shared/SignIn/SignInSelector';
 
 export interface IHeaderProps {
     isHamburgerOpen: boolean;
     isMobile: boolean;
+    isSignIn: boolean;
     toggleHamburger: () => void;
     updateIsMobile: (isMobile: boolean) => void;
+
 }
 
 interface IState {
@@ -50,13 +53,13 @@ class Header extends React.Component<IHeaderProps, IState> {
     };
 
     render() {
-        const { isHamburgerOpen, toggleHamburger, isMobile } = this.props;
+        const { isHamburgerOpen, toggleHamburger, isMobile, isSignIn } = this.props;
         return (
             <div className="Header__Container--Out">
                 <div className="Header__Container--In">
                     <div ref={this.setWrapperRef} className={`${isHamburgerOpen ? 'Header__Button--Active' : ''} Header__Button`}>
                         <Hamburger isHamburgerOpen={isHamburgerOpen} toggleButton={toggleHamburger} />
-                        <Dropdown isHamburgerOpen={isHamburgerOpen} toggleButton={toggleHamburger} />
+                        <Dropdown isHamburgerOpen={isHamburgerOpen} toggleButton={toggleHamburger} isSignIn={isSignIn} />
                     </div>
                     <Link className="Header__Title" to="/">
                         {isMobile ? '[SWW]' : 'Steem Web Wallet [SWW]'}
@@ -71,6 +74,7 @@ class Header extends React.Component<IHeaderProps, IState> {
 const mapStateToProps = (state: RootState, _ownProps: {}) => ({
     isHamburgerOpen: getIsHamburgerOpen(state),
     isMobile: getIsMobile(state),
+    isSignIn: getIsSignIn(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
