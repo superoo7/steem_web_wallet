@@ -17,7 +17,7 @@ class ProfilePage extends React.Component<IProfilePageProps> {
         return (
             <div className="Wallet__Container--Main">
                 <Wallet username={username} />
-                <Link className="Button__Transaction" to={`/transaction?to=${username}`}>
+                <Link className="Button__Transaction" to={`/transfer?to=${username}`}>
                     Make Transaction to @{username}
                 </Link>
             </div>
