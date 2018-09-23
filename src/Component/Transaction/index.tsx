@@ -11,6 +11,12 @@ import { getAuthorProfiles } from 'Component/Shared/SignIn/Wallet/SteemProfileAc
 import Loading from 'Component/Shared/SignIn/Loading/Loading';
 import Select from 'react-select';
 import { ValueType } from 'react-select/lib/types';
+import { account } from 'Utils/Steem';
+import { getItem } from 'localforage';
+import { localForageKey } from 'Utils/LocalForage';
+import { mergeMap, map } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { AES, enc } from 'crypto-js';
 
 interface ITransactionProps {
     currency: string;
@@ -43,55 +49,98 @@ interface ITransactionState {
         from: string;
         to: string;
         amount: string;
+        currency: string;
     };
     from: string;
     to: string;
     amount: string;
-    currency: string;
+    currency: 'STEEM' | 'SBD';
     selectCurrency: { label: string; value: string };
 }
 
 class Transaction extends React.Component<ITransactionProps, ITransactionState> {
-    state = {
-        errorMessage: {
+    constructor(props: ITransactionProps) {
+        super(props);
+        const amount: string = this.props.amount ? parseFloat(this.props.amount).toFixed(3) : '';
+        const c = this.props.currency;
+        const currency: 'STEEM' | 'SBD' = c === 'STEEM' || c === 'SBD' ? c : 'STEEM';
+        this.state = {
+            errorMessage: {
+                from: '',
+                to: '',
+                amount: '',
+                currency: '',
+            },
             from: '',
-            to: '',
-            amount: '',
-        },
-        from: '',
-        to: this.props.to,
-        amount: this.props.amount || '0.000',
-        currency: this.props.currency || 'STEEM',
-        selectCurrency: {
-            label: this.props.currency || 'STEEM',
-            value: this.props.currency || 'STEEM',
-        },
-    };
+            to: this.props.to,
+            amount: amount,
+            currency: currency,
+            selectCurrency: {
+                label: currency,
+                value: currency,
+            },
+        };
+    }
 
     componentDidMount() {
-        if (!this.props.profile.profiles[this.props.to]) {
+        const profile = this.props.profile;
+
+        if (this.props.to !== '' && !profile.profiles[this.props.to]) {
             this.props.getAuthorProfiles([this.props.to]);
-        } else if (!this.props.profile.profiles[this.props.username]) {
-            this.props.getAuthorProfiles([this.props.username]);
         }
         setTimeout(() => {
             if (!this.props.isSignIn && !this.props.username) {
                 toastr.error('Not Authenticated', 'You are not signed in!');
                 // navigate('/');
+            } else {
+                if (this.props.username !== '' && !this.props.profile.profiles[this.props.username]) {
+                    this.props.getAuthorProfiles([this.props.username]);
+                }
             }
         }, 2000);
     }
+
+    handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        this.validateField('to', this.state.to);
+        this.validateField('amount', this.state.amount);
+        this.validateField('currency', this.state.currency);
+
+        if (
+            this.state.errorMessage.from === '' &&
+            this.state.errorMessage.to === '' &&
+            this.state.errorMessage.amount === '' &&
+            this.state.errorMessage.currency === ''
+        ) {
+            const aesPW = prompt('Enter your password') || '';
+            const aesEnc: any = await getItem(localForageKey.WALLET_AES_ACTIVE);
+            try {
+                const activeKey = account.decryptData(aesEnc, aesPW);
+                account
+                    .sendTransactionRx({
+                        activeKey: activeKey,
+                        from: this.props.username,
+                        to: this.state.to,
+                        amount: this.state.amount,
+                        currency: this.state.currency,
+                        memo: '',
+                    })
+                    .then(d => {
+                        alert(`Successful Transaction!\nDetails:\n${JSON.stringify(d)}`);
+                    });
+            } catch (err) {
+                alert(err.message);
+            }
+        } else {
+            toastr.error('Error on logging in', 'Sign in form not completed yet.');
+        }
+    };
 
     handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const s = {};
         const name = e.target.name;
         let value = e.target.value;
-
-        if (name === 'to') {
-            if (!this.props.profile.profiles[value]) {
-                this.props.getAuthorProfiles([value]);
-            }
-        }
 
         s[name] = value;
         this.setState(s, () => this.validateField(name, value));
@@ -105,12 +154,7 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                 selectCurrency: v,
             });
         } else {
-            this.setState({
-                errorMessage: {
-                    ...this.state.errorMessage,
-                    currency: 'Invalid currency',
-                },
-            });
+            this.validateField('currency', v.value);
         }
     };
 
@@ -120,14 +164,39 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
             case 'to':
                 const profiles = this.props.profile.profiles;
                 const prof = profiles[value];
-                if (!prof) {
-                    message = 'Profile not found';
+                if (!value.match(/^[a-z][a-z0-9\-\.]+$/)) {
+                    message = 'Invalid Steem Username';
+                } else {
+                    if (!this.props.profile.profiles[value]) {
+                        this.props.getAuthorProfiles([value]);
+                    }
                 }
                 this.setState({ errorMessage: { ...this.state.errorMessage, to: message } });
 
                 break;
             case 'amount':
-                // Insufficient funds
+                if (parseFloat(value) <= 0) {
+                    message = 'Amount cannot be 0 or less than 0';
+                } else if (value !== parseFloat(value).toFixed(3)) {
+                    message = 'Amount must be in 3 decimal places (e.g. 1.521, 1.000)';
+                }
+
+                this.setState({
+                    errorMessage: {
+                        ...this.state.errorMessage,
+                        amount: message,
+                    },
+                });
+                break;
+            case 'currency':
+                if (!(value === 'STEEM' || value === 'SBD')) {
+                    this.setState({
+                        errorMessage: {
+                            ...this.state.errorMessage,
+                            currency: 'Invalid currency',
+                        },
+                    });
+                }
                 break;
         }
     };
@@ -136,21 +205,21 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
         const { to, amount, currency } = this.state;
         const { profile, username } = this.props;
         const { isLoading, profiles } = profile;
-        // const prof = profiles[to];
 
         return (
             <div className="Login__Container--Outer">
                 <div className="Login__Container">
                     <h1 className="Login__Title">Transfer</h1>
-                    {!!profiles[username] ? (
-                        <div>
-                            <p>{`${parseFloat(profiles[username].balance) || '-'} STEEM`}</p>
-                            <p>{`${parseFloat(profiles[username].sbd_balance)} SBD` || '-'}</p>{' '}
+                    {profiles[username] ? (
+                        <div style={{ fontSize: '5rem' }}>
+                            <p>@{this.props.username}</p>
+                            <p>{`${profiles[username].balance}`}</p>
+                            <p>{`${profiles[username].sbd_balance}`}</p>
                         </div>
                     ) : (
                         undefined
                     )}
-                    <form>
+                    <form onSubmit={this.handleSubmit}>
                         <div className="Form__Container">
                             {this.state.errorMessage.from ? (
                                 <b style={{ color: 'red' }}>{this.state.errorMessage.from}</b>
@@ -163,7 +232,7 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                                 </b>
                             </label>
                             <input value={this.props.username} disabled />
-                            {this.state.errorMessage.from ? (
+                            {this.state.errorMessage.to ? (
                                 <b style={{ color: 'red' }}>{this.state.errorMessage.to}</b>
                             ) : (
                                 undefined
@@ -216,9 +285,10 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                             <input
                                 onChange={this.handleChange}
                                 type="number"
-                                placeholder="Enter To"
+                                placeholder="Enter Amount"
                                 name="amount"
                                 value={amount}
+                                step="0.001"
                                 required
                             />
                             <label>
@@ -231,6 +301,9 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                                     value={this.state.selectCurrency}
                                 />
                             </label>
+                            <button className="Btn__Submit" type="submit">
+                                Send Transaction
+                            </button>
                         </div>
                     </form>
                 </div>

@@ -2,8 +2,8 @@ import dsteem, { PrivateKey, SignedTransaction, Transaction } from 'dsteem/lib';
 import { from, Observable, empty, throwError } from 'rxjs';
 import { SteemClass } from './Steem';
 import { map, mergeMap } from 'rxjs/operators';
-import CryptoJS, { AES } from 'crypto-js';
-import buffer from 'buffer';
+import { AES, enc } from 'crypto-js';
+import * as buffer from 'buffer';
 
 export interface AccountClass {
     steem: SteemClass;
@@ -190,7 +190,7 @@ class Account implements AccountClass {
         const decrypted = AES.decrypt(encryptedMessage, key);
         let temp;
         try {
-            temp = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+            temp = JSON.parse(decrypted.toString(enc.Utf8));
         } catch (err) {
             temp = { verify: false };
         }
