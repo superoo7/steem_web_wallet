@@ -13,7 +13,7 @@ dotenv.config();
 // set jest timeout longer
 jest.setTimeout(10000);
 
-describe('Account', () => {
+xdescribe('Account', () => {
     let steem: SteemClass, account: AccountClass;
     let ownerKey: string, activeKey: string, username: string;
 

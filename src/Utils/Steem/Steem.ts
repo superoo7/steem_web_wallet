@@ -1,4 +1,4 @@
-import { Client, PrivateKey } from 'dsteem';
+import { Client, PrivateKey, ClientOptions } from 'dsteem';
 import { race, timer, from, Observable } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 import { API } from './SteemAPI';
@@ -18,9 +18,9 @@ class Steem implements SteemClass {
     public api: API;
     public client: Client;
 
-    constructor(api: API = API.steemit) {
+    constructor(api: API = API.steemit, opt?: ClientOptions) {
         this.api = api;
-        this.client = new Client(api);
+        this.client = new Client(api, opt);
     }
 
     getClient = () => this.client;

@@ -1,11 +1,27 @@
-import { PrivateKey } from 'dsteem/lib';
+import dsteem, { PrivateKey, SignedTransaction, Transaction } from 'dsteem/lib';
 import { from, Observable, empty, throwError } from 'rxjs';
 import { SteemClass } from './Steem';
 import { map, mergeMap } from 'rxjs/operators';
-import CryptoJS, { AES } from 'crypto-js';
+import { AES, enc } from 'crypto-js';
+import * as buffer from 'buffer';
 
 export interface AccountClass {
     steem: SteemClass;
+
+    sendTransactionRx: (transaction: TransactionRx) => Promise<dsteem.TransactionConfirmation>;
+
+    transactionGenerator: (
+        from: string,
+        to: string,
+        amount: string | number,
+        currency: Currency,
+        memo: string,
+        activeKey: string,
+        dynamicGlobalProperties: any,
+    ) => dsteem.SignedTransaction;
+    verifyTransaction: (stx: dsteem.SignedTransaction) => Promise<boolean>;
+    sendTransaction: (stx: dsteem.SignedTransaction) => Promise<dsteem.TransactionConfirmation>;
+
     generateEncData: (
         username: string,
         password: string,
@@ -20,12 +36,84 @@ export interface AccountClass {
     decryptData: (encryptedMessage: string, key: string) => string;
 }
 
+type Currency = 'STEEM' | 'SBD';
+
+interface TransactionRx {
+    from: string;
+    to: string;
+    amount: string | number;
+    currency: Currency;
+    memo: string;
+    activeKey: string;
+}
+
 class Account implements AccountClass {
     public steem: SteemClass;
 
     constructor(steem: SteemClass) {
         this.steem = steem;
     }
+
+    // Transaction Related
+
+    sendTransactionRx = async (transaction: TransactionRx) => {
+        try {
+            const dynamicGlobalProperties = await this.steem.getDynamicGlobalProperties();
+            const { from, to, amount, currency, memo, activeKey } = transaction;
+            const stx = this.transactionGenerator(from, to, amount, currency, memo, activeKey, dynamicGlobalProperties);
+            const verify = await this.verifyTransaction(stx);
+            if (verify !== true) {
+                throw new Error('Failed to verify transaction');
+            }
+            return this.sendTransaction(stx);
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    };
+
+    transactionGenerator = (
+        from: string,
+        to: string,
+        amount: string | number,
+        currency: Currency,
+        memo: string,
+        activeKey: string,
+        dynamicGlobalProperties: any,
+    ) => {
+        const head_block_number = dynamicGlobalProperties.result.head_block_number;
+        const head_block_id = dynamicGlobalProperties.result.head_block_id;
+        // https://github.com/feross/buffer
+        const refblock_prefix = new buffer.Buffer(head_block_id, 'hex').readUInt32LE(4);
+        const op: Transaction = {
+            ref_block_num: head_block_number, //reference head block number required by tapos (transaction as proof of stake)
+            ref_block_prefix: refblock_prefix, //reference buffer of block id as prefix
+            expiration: new Date(Date.now() + 200000).toISOString().slice(0, -5), //set expiration time for transaction (+1 min)
+            operations: [
+                [
+                    'transfer',
+                    {
+                        from: from,
+                        to: to,
+                        amount: `${amount} ${currency}`,
+                        memo: memo,
+                    },
+                ],
+            ],
+            extensions: [], //extensions for this transaction
+        };
+        const dsteemkey = PrivateKey.fromString(activeKey);
+        return this.steem.client.broadcast.sign(op, dsteemkey);
+    };
+
+    verifyTransaction = (stx: SignedTransaction) => {
+        return this.steem.client.database.verifyAuthority(stx);
+    };
+
+    sendTransaction = (stx: SignedTransaction) => {
+        return this.steem.client.broadcast.send(stx);
+    };
+
+    // Account Sign In relate
 
     generateEncData = (username: string, password: string, aesPassword: string) => {
         return this.verifyAccount(username, password).pipe(
@@ -102,7 +190,7 @@ class Account implements AccountClass {
         const decrypted = AES.decrypt(encryptedMessage, key);
         let temp;
         try {
-            temp = JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+            temp = JSON.parse(decrypted.toString(enc.Utf8));
         } catch (err) {
             temp = { verify: false };
         }

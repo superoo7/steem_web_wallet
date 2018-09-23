@@ -10,3 +10,4 @@ _book/
 deploy_key
 out/
 .env
+playground/
