@@ -15,6 +15,7 @@ import { combineReducers } from 'redux';
 import { headerReducer, HeaderState, HeaderActions, headerInitialState } from 'Component/Shared/Header/HeaderReducer';
 import { signInInitialState, signInReducer, SignInState, SignInActions } from 'Component/Shared/SignIn/SignInReducer';
 import { reducer as toastrReducer, ToastrState } from 'react-redux-toastr';
+import { confirmReducer, ConfirmState, ConfirmActions, confirmInitialState} from 'Component/Shared/Confirm/ConfirmReducer';
 
 import {
     steemProfileReducer,
@@ -28,18 +29,21 @@ interface reducerState {
     signIn: SignInState;
     profiles: SteemProfileState;
     toastr: ToastrState;
+    confirm: ConfirmState;
 }
-type reducerAction = HeaderActions & SignInActions & SteemProfileActions;
+type reducerAction = HeaderActions & SignInActions & SteemProfileActions & ConfirmActions;
 const initialState = {
     header: headerInitialState,
     signIn: signInInitialState,
     profiles: steemProfileInitialState,
+    confirm: confirmInitialState,
 };
 export const rootReducer = combineReducers<reducerState, reducerAction>({
     header: headerReducer,
     signIn: signInReducer,
     profiles: steemProfileReducer,
     toastr: toastrReducer,
+    confirm: confirmReducer,
 });
 
 // Combine Epics
