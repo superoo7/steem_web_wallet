@@ -18,7 +18,6 @@ export interface IHeaderProps {
     isSignIn: boolean;
     toggleHamburger: () => void;
     updateIsMobile: (isMobile: boolean) => void;
-
 }
 
 interface IState {
