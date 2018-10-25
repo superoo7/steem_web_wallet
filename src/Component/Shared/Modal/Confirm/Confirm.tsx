@@ -54,7 +54,7 @@ class Confirm extends React.Component<IConfirmProps, IConfirmState> {
     };
 
     render() {
-        const { title, message, isConfirm, closeConfirm, openConfirm } = this.props;
+        const { title, message, isConfirm, closeConfirm } = this.props;
         return (
             <Modal isOpen={isConfirm} contentLabel="Confirm" style={customStyles} onRequestClose={closeConfirm}>
                 <div style={{ fontSize: '30px', padding: '10px' }}>
