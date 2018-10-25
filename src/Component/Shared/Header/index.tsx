@@ -61,7 +61,7 @@ class Header extends React.Component<IHeaderProps, IState> {
                         <Dropdown isHamburgerOpen={isHamburgerOpen} toggleButton={toggleHamburger} isSignIn={isSignIn} />
                     </div>
                     <Link className="Header__Title" to="/">
-                        {isMobile ? 'E-Wallet' : 'E-Wallet'}
+                        {isMobile ? '[SWW]' : 'Steem Web Wallet [SWW]'}
                     </Link>
                     <Settings isMobile={isMobile} />
                 </div>
