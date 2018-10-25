@@ -1,22 +1,21 @@
 import * as React from 'react';
-import Tooltips from 'Component/Shared/Tooltips';
+import { connect } from 'react-redux';
+import { toastr } from 'react-redux-toastr';
+import Select from 'react-select';
+import { ValueType } from 'react-select/lib/types';
+import { getItem } from 'localforage';
+
 import { RootState, RootAction } from 'Types';
 import { getIsSignIn, getUsername } from 'Component/Shared/SignIn/SignInSelector';
-import { connect } from 'react-redux';
-import { navigate } from '@reach/router';
-import { toastr } from 'react-redux-toastr';
+import Tooltips from 'Component/Shared/Tooltips';
 import { getProfile } from 'Component/Shared/SignIn/Wallet/SteemProfileSelector';
 import { bindActionCreators, Dispatch } from 'redux';
 import { getAuthorProfiles } from 'Component/Shared/SignIn/Wallet/SteemProfileAction';
 import Loading from 'Component/Shared/SignIn/Loading/Loading';
-import Select from 'react-select';
-import { ValueType } from 'react-select/lib/types';
 import { account } from 'Utils/Steem';
-import { getItem } from 'localforage';
 import { localForageKey } from 'Utils/LocalForage';
-import { mergeMap, map } from 'rxjs/operators';
-import { from } from 'rxjs';
-import { AES, enc } from 'crypto-js';
+import { openInfo } from 'Component/Shared/Modal/ModalAction';
+import Info from 'Component/Shared/Modal/Info/Info';
 
 interface ITransactionProps {
     currency: string;
@@ -42,6 +41,7 @@ interface ITransactionProps {
         isLoading: boolean;
     };
     getAuthorProfiles: (authors: string[]) => void;
+    openInfo: (message: string) => void;
 }
 
 interface ITransactionState {
@@ -127,10 +127,15 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                         memo: '',
                     })
                     .then(d => {
-                        alert(`Successful Transaction!\nDetails:\n${JSON.stringify(d)}`);
+                        this.props.openInfo(`Successful Transaction!\n
+                        id: ${d.id}\n
+                        block number: ${d.block_num}\n
+                        trx number: ${d.trx_num}
+                        `);
                     });
             } catch (err) {
-                alert(err.message);
+                const error = String(err) === '[object Object]' ? JSON.stringify(err) : String(err);
+                this.props.openInfo(error);
             }
         } else {
             toastr.error('Error on logging in', 'Sign in form not completed yet.');
@@ -207,107 +212,110 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
         const { isLoading, profiles } = profile;
 
         return (
-            <div className="Login__Container--Outer">
-                <div className="Login__Container">
-                    <h1 className="Login__Title">Transfer</h1>
-                    {profiles[username] ? (
-                        <div style={{ fontSize: '5rem' }}>
-                            <p>@{this.props.username}</p>
-                            <p>{`${profiles[username].balance}`}</p>
-                            <p>{`${profiles[username].sbd_balance}`}</p>
-                        </div>
-                    ) : (
-                        undefined
-                    )}
-                    <form onSubmit={this.handleSubmit}>
-                        <div className="Form__Container">
-                            {this.state.errorMessage.from ? (
-                                <b style={{ color: 'red' }}>{this.state.errorMessage.from}</b>
-                            ) : (
-                                undefined
-                            )}
-                            <label>
-                                <b>
-                                    <Tooltips hoverText={'From'} tooltipsText={'Your Steemit Username.'} />
-                                </b>
-                            </label>
-                            <input value={this.props.username} disabled />
-                            {this.state.errorMessage.to ? (
-                                <b style={{ color: 'red' }}>{this.state.errorMessage.to}</b>
-                            ) : (
-                                undefined
-                            )}
-                            <label style={{ display: 'flex', justifyContent: 'space-around' }}>
-                                <b>
-                                    <Tooltips hoverText={'To'} tooltipsText={'To who'} />
-                                </b>
-                                <div
-                                    style={{
-                                        maxHeight: '3rem',
-                                    }}
-                                >
-                                    {isLoading ? (
-                                        <Loading />
-                                    ) : profiles[to] ? (
-                                        <img
-                                            style={{
-                                                width: '6rem',
-                                                height: '6rem',
-                                                minWidth: '6rem',
-                                                minHeight: '6rem',
-                                            }}
-                                            src={profiles[to].profile || '/favicon.ico'}
-                                            alt={to}
-                                        />
-                                    ) : (
-                                        undefined
-                                    )}
-                                </div>
-                            </label>
-                            <input
-                                onChange={this.handleChange}
-                                type="text"
-                                placeholder="Enter To"
-                                name="to"
-                                value={to}
-                                required
-                            />
-                            {this.state.errorMessage.amount ? (
-                                <b style={{ color: 'red' }}>{this.state.errorMessage.amount}</b>
-                            ) : (
-                                undefined
-                            )}
-                            <label>
-                                <b>
-                                    <Tooltips hoverText={'Amount'} tooltipsText={'Amount of Steem/SBD'} />
-                                </b>
-                            </label>
-                            <input
-                                onChange={this.handleChange}
-                                type="number"
-                                placeholder="Enter Amount"
-                                name="amount"
-                                value={amount}
-                                step="0.001"
-                                required
-                            />
-                            <label>
-                                <b>
-                                    <Tooltips hoverText="Currency" tooltipsText="STEEM or SBD" />
-                                </b>
-                                <Select
-                                    onChange={this.handleSelectChange}
-                                    options={[{ value: 'STEEM', label: 'STEEM' }, { value: 'SBD', label: 'SBD' }]}
-                                    value={this.state.selectCurrency}
+            <React.Fragment>
+                <Info />
+                <div className="Login__Container--Outer">
+                    <div className="Login__Container">
+                        <h1 className="Login__Title">Transfer</h1>
+                        {profiles[username] ? (
+                            <div style={{ fontSize: '5rem' }}>
+                                <p>@{this.props.username}</p>
+                                <p>{`${profiles[username].balance}`}</p>
+                                <p>{`${profiles[username].sbd_balance}`}</p>
+                            </div>
+                        ) : (
+                            undefined
+                        )}
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="Form__Container">
+                                {this.state.errorMessage.from ? (
+                                    <b style={{ color: 'red' }}>{this.state.errorMessage.from}</b>
+                                ) : (
+                                    undefined
+                                )}
+                                <label>
+                                    <b>
+                                        <Tooltips hoverText={'From'} tooltipsText={'Your Steemit Username.'} />
+                                    </b>
+                                </label>
+                                <input value={this.props.username} disabled />
+                                {this.state.errorMessage.to ? (
+                                    <b style={{ color: 'red' }}>{this.state.errorMessage.to}</b>
+                                ) : (
+                                    undefined
+                                )}
+                                <label style={{ display: 'flex', justifyContent: 'space-around' }}>
+                                    <b>
+                                        <Tooltips hoverText={'To'} tooltipsText={'To who'} />
+                                    </b>
+                                    <div
+                                        style={{
+                                            maxHeight: '3rem',
+                                        }}
+                                    >
+                                        {isLoading ? (
+                                            <Loading />
+                                        ) : profiles[to] ? (
+                                            <img
+                                                style={{
+                                                    width: '6rem',
+                                                    height: '6rem',
+                                                    minWidth: '6rem',
+                                                    minHeight: '6rem',
+                                                }}
+                                                src={profiles[to].profile || '/favicon.ico'}
+                                                alt={to}
+                                            />
+                                        ) : (
+                                            undefined
+                                        )}
+                                    </div>
+                                </label>
+                                <input
+                                    onChange={this.handleChange}
+                                    type="text"
+                                    placeholder="Enter To"
+                                    name="to"
+                                    value={to}
+                                    required
                                 />
-                            </label>
-                            <button className="Btn__Submit" type="submit">
-                                Send Transaction
-                            </button>
-                        </div>
-                    </form>
+                                {this.state.errorMessage.amount ? (
+                                    <b style={{ color: 'red' }}>{this.state.errorMessage.amount}</b>
+                                ) : (
+                                    undefined
+                                )}
+                                <label>
+                                    <b>
+                                        <Tooltips hoverText={'Amount'} tooltipsText={'Amount of Steem/SBD'} />
+                                    </b>
+                                </label>
+                                <input
+                                    onChange={this.handleChange}
+                                    type="number"
+                                    placeholder="Enter Amount"
+                                    name="amount"
+                                    value={amount}
+                                    step="0.001"
+                                    required
+                                />
+                                <label>
+                                    <b>
+                                        <Tooltips hoverText="Currency" tooltipsText="STEEM or SBD" />
+                                    </b>
+                                    <Select
+                                        onChange={this.handleSelectChange}
+                                        options={[{ value: 'STEEM', label: 'STEEM' }, { value: 'SBD', label: 'SBD' }]}
+                                        value={this.state.selectCurrency}
+                                    />
+                                </label>
+                                <button className="Btn__Submit" type="submit">
+                                    Send Transaction
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }
@@ -322,6 +330,7 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
     bindActionCreators(
         {
             getAuthorProfiles: getAuthorProfiles,
+            openInfo: openInfo,
         },
         dispatch,
     );
