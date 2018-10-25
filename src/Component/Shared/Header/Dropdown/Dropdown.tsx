@@ -18,6 +18,9 @@ const Dropdown = (props: IDropdownProps) => {
                     <Link onClick={props.toggleButton} to="/transfer">
                         Make Transactions
                     </Link>
+                    <Link onClick={props.toggleButton} to="/claim">
+                        Claim/Create Account
+                    </Link>
                     <Link onClick={props.toggleButton} to="/settings">
                         Settings
                     </Link>

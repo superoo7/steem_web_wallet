@@ -21,6 +21,10 @@
     font-size: 4rem;
 }
 
+.Login__Description {
+    font-size: 2rem;
+}
+
 .Form__Container {
     display: flex;
     flex-direction: column;
@@ -43,6 +47,8 @@
     border: 0.1rem solid lighten($mintGreen, 10%);
     background: $mintGreen;
     color: white;
+    font-size: 3rem;
+    padding: 1rem;
 
     &:disabled {
         border: 0.1rem solid darken(grey, 10%);

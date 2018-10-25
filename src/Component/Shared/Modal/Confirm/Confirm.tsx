@@ -49,7 +49,8 @@ class Confirm extends React.Component<IConfirmProps, IConfirmState> {
         });
     };
 
-    handleSubmit = () => {
+    handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         this.props.updatePassword(this.state.password);
     };
 
@@ -60,8 +61,10 @@ class Confirm extends React.Component<IConfirmProps, IConfirmState> {
                 <div style={{ fontSize: '30px', padding: '10px' }}>
                     <h1>{title}</h1>
                     <h3>{message}</h3>
-                    <input type="password" name="password" onChange={this.handleChange} />
-                    <button onClick={this.handleSubmit}>Confirm</button>
+                    <form onSubmit={this.handleSubmit}>
+                        <input type="password" name="password" onChange={this.handleChange} />
+                        <button type="submit">Confirm</button>
+                    </form>
                 </div>
             </Modal>
         );
