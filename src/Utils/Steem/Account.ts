@@ -1,7 +1,7 @@
-import dsteem, { PrivateKey, SignedTransaction, Transaction, Asset, Operation } from 'dsteem';
-import { from, Observable, empty, throwError } from 'rxjs';
+import dsteem, { PrivateKey, SignedTransaction, Transaction, Operation } from 'dsteem';
+import { from, Observable, timer, throwError, race } from 'rxjs';
 import { SteemClass } from './Steem';
-import { map } from 'rxjs/operators';
+import { map, mapTo } from 'rxjs/operators';
 import { AES, enc } from 'crypto-js';
 import * as buffer from 'buffer';
 
@@ -69,7 +69,8 @@ class Account implements AccountClass {
                 },
             ],
         ];
-        return this.steem.client.broadcast.sendOperations(ops, PrivateKey.fromString(privateKey));
+        const getData: Promise<any> = this.steem.client.broadcast.sendOperations(ops, PrivateKey.fromString(privateKey));
+        return race(timer(6000).pipe(mapTo('Timeout')), from(getData));
     };
 
     // ============================================================

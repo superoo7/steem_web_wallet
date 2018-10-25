@@ -8,7 +8,6 @@ import { getIsHamburgerOpen, getIsMobile } from './HeaderSelector';
 import { toggleHamburger, updateIsMobile } from './HeaderAction';
 import Hamburger from './Hamburger/Hamburger';
 import Dropdown from './Dropdown/Dropdown';
-import Settings from './Settings/Settings';
 import { enquireScreen } from 'Utils/enquire';
 import { getIsSignIn } from 'Component/Shared/SignIn/SignInSelector';
 
@@ -63,7 +62,7 @@ class Header extends React.Component<IHeaderProps, IState> {
                     <Link className="Header__Title" to="/">
                         {isMobile ? '[SWW]' : 'Steem Web Wallet [SWW]'}
                     </Link>
-                    <Settings isMobile={isMobile} />
+                    <div />
                 </div>
             </div>
         );

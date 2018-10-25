@@ -23,19 +23,23 @@ class ClaimAccount extends React.Component<IClaimAccountProps, {}> {
         try {
             const activeKey = account.decryptData(aesEnc, aesPW);
 
-            account
-                .claimAccount(this.props.username, activeKey)
-                .then((d: any) => {
-                    this.props.openInfo(`Successfully claimed account!\n
+            account.claimAccount(this.props.username, activeKey).subscribe(
+                d => {
+                    if (d !== 'Timeout') {
+                        this.props.openInfo(`Successfully claimed account!\n
                         id: ${d.id}\n
                         block number: ${d.block_num}\n
                         trx number: ${d.trx_num}
                         `);
-                })
-                .catch(err => {
+                    } else {
+                        this.props.openInfo(`Request timeout, please try again.`);
+                    }
+                },
+                err => {
                     const error = String(err) === '[object Object]' ? JSON.stringify(err) : String(err);
                     this.props.openInfo(error);
-                });
+                },
+            );
         } catch (err) {
             const error = String(err) === '[object Object]' ? JSON.stringify(err) : String(err);
             this.props.openInfo(error);
