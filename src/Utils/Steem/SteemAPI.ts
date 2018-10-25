@@ -1,6 +1,7 @@
 export enum API {
     // Steem API
     steemit = 'https://api.steemit.com',
+    mahdiyari = 'https://api.mahdiyari.info',
     gtg = 'https://gtg.steem.house:8090',
     curie = 'https://rpc.curiesteem.com',
     steemliberator = 'https://rpc.steemliberator.com',

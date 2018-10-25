@@ -9,6 +9,7 @@ import Profile from './Page/Profile';
 import QR from './Page/QR';
 import Transfer from './Page/Transfer';
 import Claim from './Page/Claim';
+import Settings from './Page/Settings';
 import Header from 'Component/Shared/Header';
 
 export default () => (
@@ -31,6 +32,7 @@ export default () => (
             <Profile path="/profile/:username" />
             <Transfer path="/transfer" />
             <Claim path="/claim" />
+            <Settings path="/settings" />
             <NotFound default />
         </Router>
     </div>

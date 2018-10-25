@@ -5,10 +5,11 @@ import { SignInActions } from 'Component/Shared/SignIn/SignInReducer';
 import { SteemProfileActions } from 'Component/Shared/SignIn/Wallet/SteemProfileReducer';
 import { ToastrActionCreators } from 'react-redux-toastr';
 import { ModalActions } from 'Component/Shared/Modal/ModalReducer';
+import { SettingsActions } from 'Component/Settings/SettingsReducer';
 
 declare module 'Types' {
     export type RootState = StateType<typeof rootReducer>;
-    export type RootAction = HeaderActions & SignInActions & SteemProfileActions & ModalActions; //& ToastrActionCreators;
+    export type RootAction = HeaderActions & SignInActions & SteemProfileActions & ModalActions & SettingsActions; //& ToastrActionCreators;
 }
 
 // {
