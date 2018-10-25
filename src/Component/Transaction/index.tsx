@@ -277,19 +277,21 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                                     >
                                         {isLoading ? (
                                             <Loading />
-                                        ) : profiles[to] ? (
+                                        ) : (
                                             <img
                                                 style={{
-                                                    width: '6rem',
-                                                    height: '6rem',
-                                                    minWidth: '6rem',
-                                                    minHeight: '6rem',
+                                                    width: '3rem',
+                                                    height: '3rem',
+                                                    minWidth: '3rem',
+                                                    minHeight: '3rem',
                                                 }}
-                                                src={profiles[to].profile || '/favicon.ico'}
+                                                src={`http://steemitimages.com/u/${to}/avatar`}
                                                 alt={to}
+                                                onError={(e: any) => {
+                                                    e.target.alt = 'INVALID USERNAME';
+                                                    e.target.src = '';
+                                                }}
                                             />
-                                        ) : (
-                                            undefined
                                         )}
                                     </div>
                                 </label>

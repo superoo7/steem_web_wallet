@@ -1,7 +1,7 @@
-import dsteem, { PrivateKey, SignedTransaction, Transaction } from 'dsteem/lib';
+import dsteem, { PrivateKey, SignedTransaction, Transaction, Asset, Operation } from 'dsteem';
 import { from, Observable, empty, throwError } from 'rxjs';
 import { SteemClass } from './Steem';
-import { map, mergeMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AES, enc } from 'crypto-js';
 import * as buffer from 'buffer';
 
@@ -54,7 +54,31 @@ class Account implements AccountClass {
         this.steem = steem;
     }
 
+    // ============================================================
+    // Claim account with RC
+    // ============================================================
+
+    claimAccount = (username: string, privateKey: string) => {
+        const ops: Operation[] = [
+            [
+                'claim_account',
+                {
+                    creator: username,
+                    fee: '0.000 STEEM',
+                    extensions: [],
+                },
+            ],
+        ];
+        return this.steem.client.broadcast.sendOperations(ops, PrivateKey.fromString(privateKey));
+    };
+
+    // ============================================================
+    // Create account
+    // ============================================================
+
+    // ============================================================
     // Transaction Related
+    // ============================================================
 
     sendTransactionRx = async (transaction: TransactionRx) => {
         try {
@@ -113,7 +137,9 @@ class Account implements AccountClass {
         return this.steem.client.broadcast.send(stx);
     };
 
+    // ============================================================
     // Account Sign In relate
+    // ============================================================
 
     generateEncData = (username: string, password: string, aesPassword: string) => {
         return this.verifyAccount(username, password).pipe(
