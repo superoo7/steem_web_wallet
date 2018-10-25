@@ -23,7 +23,7 @@ const customStyles = {
 };
 
 interface IConfirmProps {
-    action: () => void;
+    updatePassword: (password: string) => void;
     message: string;
     title: string;
     // Redux Props
@@ -32,27 +32,38 @@ interface IConfirmProps {
     isConfirm: boolean;
 }
 
-interface IConfirmState {}
+interface IConfirmState {
+    password: string;
+}
 
 Modal.setAppElement('#app');
 
 class Confirm extends React.Component<IConfirmProps, IConfirmState> {
-    componentDidMount() {
-        this.props.openConfirm();
-    }
+    state = {
+        password: '',
+    };
+
+    handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            password: e.target.value,
+        });
+    };
+
+    handleSubmit = () => {
+        this.props.updatePassword(this.state.password);
+    };
+
     render() {
-        const { action, title, message, isConfirm, closeConfirm, openConfirm } = this.props;
+        const { title, message, isConfirm, closeConfirm, openConfirm } = this.props;
         return (
-            <React.Fragment>
-                <Modal isOpen={isConfirm} contentLabel="Confirm" style={customStyles} onRequestClose={closeConfirm}>
-                    <div style={{ fontSize: '30px', padding: '10px' }}>
-                        <h1>{title}</h1>
-                        <h3>{message}</h3>
-                        <input type="password" name="password" id="" />
-                        <button onClick={() => action()}>Confirm</button>
-                    </div>
-                </Modal>
-            </React.Fragment>
+            <Modal isOpen={isConfirm} contentLabel="Confirm" style={customStyles} onRequestClose={closeConfirm}>
+                <div style={{ fontSize: '30px', padding: '10px' }}>
+                    <h1>{title}</h1>
+                    <h3>{message}</h3>
+                    <input type="password" name="password" onChange={this.handleChange} />
+                    <button onClick={this.handleSubmit}>Confirm</button>
+                </div>
+            </Modal>
         );
     }
 }

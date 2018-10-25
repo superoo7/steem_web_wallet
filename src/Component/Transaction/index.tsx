@@ -14,8 +14,9 @@ import { getAuthorProfiles } from 'Component/Shared/SignIn/Wallet/SteemProfileAc
 import Loading from 'Component/Shared/SignIn/Loading/Loading';
 import { account } from 'Utils/Steem';
 import { localForageKey } from 'Utils/LocalForage';
-import { openInfo } from 'Component/Shared/Modal/ModalAction';
+import { openInfo, openConfirm } from 'Component/Shared/Modal/ModalAction';
 import Info from 'Component/Shared/Modal/Info/Info';
+import Confirm from 'Component/Shared/Modal/Confirm/Confirm';
 
 interface ITransactionProps {
     currency: string;
@@ -42,17 +43,20 @@ interface ITransactionProps {
     };
     getAuthorProfiles: (authors: string[]) => void;
     openInfo: (message: string) => void;
+    openConfirm: () => void;
 }
 
 interface ITransactionState {
     errorMessage: {
         from: string;
         to: string;
+        memo: string;
         amount: string;
         currency: string;
     };
     from: string;
     to: string;
+    memo: string;
     amount: string;
     currency: 'STEEM' | 'SBD';
     selectCurrency: { label: string; value: string };
@@ -68,11 +72,13 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
             errorMessage: {
                 from: '',
                 to: '',
+                memo: '',
                 amount: '',
                 currency: '',
             },
             from: '',
             to: this.props.to,
+            memo: '',
             amount: amount,
             currency: currency,
             selectCurrency: {
@@ -106,40 +112,51 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
         this.validateField('to', this.state.to);
         this.validateField('amount', this.state.amount);
         this.validateField('currency', this.state.currency);
+        this.validateField('memo', this.state.memo);
 
         if (
             this.state.errorMessage.from === '' &&
             this.state.errorMessage.to === '' &&
             this.state.errorMessage.amount === '' &&
-            this.state.errorMessage.currency === ''
+            this.state.errorMessage.currency === '' &&
+            this.state.errorMessage.memo === ''
         ) {
-            const aesPW = prompt('Enter your password') || '';
-            const aesEnc: any = await getItem(localForageKey.WALLET_AES_ACTIVE);
-            try {
-                const activeKey = account.decryptData(aesEnc, aesPW);
-                account
-                    .sendTransactionRx({
-                        activeKey: activeKey,
-                        from: this.props.username,
-                        to: this.state.to,
-                        amount: this.state.amount,
-                        currency: this.state.currency,
-                        memo: '',
-                    })
-                    .then(d => {
-                        this.props.openInfo(`Successful Transaction!\n
+            this.props.openConfirm();
+        } else {
+            toastr.error('Error on logging in', 'Sign in form not completed yet.');
+        }
+    };
+
+    updatePassword = async (password: string) => {
+        const aesPW = password;
+        const aesEnc: string = (await getItem(localForageKey.WALLET_AES_ACTIVE)) as string;
+        try {
+            const activeKey = account.decryptData(aesEnc, aesPW);
+            account
+                .sendTransactionRx({
+                    activeKey: activeKey,
+                    from: this.props.username,
+                    to: this.state.to,
+                    amount: this.state.amount,
+                    currency: this.state.currency,
+                    memo: this.state.memo,
+                })
+                .then(d => {
+                    this.props.openInfo(`Successful Transaction!\n
                         id: ${d.id}\n
                         block number: ${d.block_num}\n
                         trx number: ${d.trx_num}
                         `);
-                    });
-            } catch (err) {
-                const error = String(err) === '[object Object]' ? JSON.stringify(err) : String(err);
-                this.props.openInfo(error);
-            }
-        } else {
-            toastr.error('Error on logging in', 'Sign in form not completed yet.');
+                });
+        } catch (err) {
+            const error = String(err) === '[object Object]' ? JSON.stringify(err) : String(err);
+            this.props.openInfo(error);
         }
+    };
+
+    getMessage = () => {
+        const { to, amount, currency } = this.state;
+        return `Confirm transfer ${amount} ${currency} to ${to}?`;
     };
 
     handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -203,16 +220,19 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                     });
                 }
                 break;
+            case 'memo':
+                break;
         }
     };
 
     render() {
-        const { to, amount, currency } = this.state;
+        const { to, amount, currency, memo } = this.state;
         const { profile, username } = this.props;
         const { isLoading, profiles } = profile;
 
         return (
             <React.Fragment>
+                <Confirm title="Enter your password" message={this.getMessage()} updatePassword={this.updatePassword} />
                 <Info />
                 <div className="Login__Container--Outer">
                     <div className="Login__Container">
@@ -228,6 +248,7 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                         )}
                         <form onSubmit={this.handleSubmit}>
                             <div className="Form__Container">
+                                {/* ========== FROM ========== */}
                                 {this.state.errorMessage.from ? (
                                     <b style={{ color: 'red' }}>{this.state.errorMessage.from}</b>
                                 ) : (
@@ -239,6 +260,7 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                                     </b>
                                 </label>
                                 <input value={this.props.username} disabled />
+                                {/* ========== TO ========== */}
                                 {this.state.errorMessage.to ? (
                                     <b style={{ color: 'red' }}>{this.state.errorMessage.to}</b>
                                 ) : (
@@ -279,6 +301,25 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                                     value={to}
                                     required
                                 />
+                                {/* ========== MEMO ========== */}
+                                {this.state.errorMessage.memo ? (
+                                    <b style={{ color: 'red' }}>{this.state.errorMessage.memo}</b>
+                                ) : (
+                                    undefined
+                                )}
+                                <label>
+                                    <b>
+                                        <Tooltips hoverText={'Memo'} tooltipsText={'Memo message for the transaction'} />
+                                    </b>
+                                </label>
+                                <input
+                                    onChange={this.handleChange}
+                                    type="text"
+                                    placeholder="Enter Memo"
+                                    name="memo"
+                                    value={memo}
+                                />
+                                {/* ========== AMOUNT ========== */}
                                 {this.state.errorMessage.amount ? (
                                     <b style={{ color: 'red' }}>{this.state.errorMessage.amount}</b>
                                 ) : (
@@ -298,6 +339,7 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                                     step="0.001"
                                     required
                                 />
+                                {/* ========== CURRENCY ========== */}
                                 <label>
                                     <b>
                                         <Tooltips hoverText="Currency" tooltipsText="STEEM or SBD" />
@@ -308,6 +350,7 @@ class Transaction extends React.Component<ITransactionProps, ITransactionState> 
                                         value={this.state.selectCurrency}
                                     />
                                 </label>
+                                {/* ========== SUBMIT ========== */}
                                 <button className="Btn__Submit" type="submit">
                                     Send Transaction
                                 </button>
@@ -331,6 +374,7 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) =>
         {
             getAuthorProfiles: getAuthorProfiles,
             openInfo: openInfo,
+            openConfirm: openConfirm,
         },
         dispatch,
     );

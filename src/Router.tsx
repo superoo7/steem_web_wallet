@@ -10,8 +10,6 @@ import QR from './Page/QR';
 import Transfer from './Page/Transfer';
 import Header from 'Component/Shared/Header';
 
-import T from './Page/T';
-
 export default () => (
     <div>
         <ReduxToastr
@@ -31,7 +29,6 @@ export default () => (
             <QR path="/qr" />
             <Profile path="/profile/:username" />
             <Transfer path="/transfer" />
-            <T path="/test" />
             <NotFound default />
         </Router>
     </div>
