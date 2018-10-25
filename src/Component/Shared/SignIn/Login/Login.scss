@@ -17,13 +17,15 @@
 }
 
 .Login__Title {
-    font-size: $Header1;
+    // font-size: $Header1;
+    font-size: 4rem;
 }
 
 .Form__Container {
     display: flex;
     flex-direction: column;
-    font-size: 3rem;
+    // font-size: 3rem;
+    font-size: 1.6rem;
     padding: 0.5rem;
 
     label,
