@@ -66,7 +66,7 @@ class ClaimAccount extends React.Component<IClaimAccountProps, {}> {
                             Claim account basically just claim account without create any discounted account.
                         </p>
                         <p className="Login__Description" style={{ color: 'red' }}>
-                            Do take note that it consume a lot of RC. (You need to have at least 3k-4k SP to do this)
+                            Do take note that it consume a lot of RC. (You need to have at least 4k SP to do this)
                         </p>
                         <button className="Btn__Submit" onClick={this.handleClaim}>
                             Claim Account

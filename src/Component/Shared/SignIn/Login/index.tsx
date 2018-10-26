@@ -135,6 +135,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                     <h1 className="Login__Title">Login</h1>
                     <form onSubmit={this.handleSubmit}>
                         <div className="Form__Container">
+                            {/* ========== Username ========== */}
                             {this.state.errorMessage.username ? (
                                 <b style={{ color: 'red' }}>{this.state.errorMessage.username}</b>
                             ) : (
