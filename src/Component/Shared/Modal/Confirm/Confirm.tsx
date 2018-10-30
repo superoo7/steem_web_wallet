@@ -61,9 +61,13 @@ class Confirm extends React.Component<IConfirmProps, IConfirmState> {
                 <div style={{ fontSize: '30px', padding: '10px' }}>
                     <h1>{title}</h1>
                     <h3>{message}</h3>
-                    <form onSubmit={this.handleSubmit}>
-                        <input type="password" name="password" onChange={this.handleChange} />
-                        <button type="submit">Confirm</button>
+                    <hr />
+                    <h3>Insert your password</h3>
+                    <form onSubmit={this.handleSubmit} style={{ display: 'flex', justifyContent: 'center' }}>
+                        <input autoFocus type="password" name="password" placeholder="password" onChange={this.handleChange} />
+                        <button className="Btn__Submit" type="submit">
+                            Confirm
+                        </button>
                     </form>
                 </div>
             </Modal>

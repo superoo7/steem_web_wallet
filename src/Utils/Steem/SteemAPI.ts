@@ -6,6 +6,6 @@ export enum API {
     curie = 'https://rpc.curiesteem.com',
     steemliberator = 'https://rpc.steemliberator.com',
     // Testnet
-    // test_steem_vc = 'https://testnet.steem.vc/',
-    // test_steemit = 'https://testnet.steemitdev.com',
+    test_steem_vc = 'https://testnet.steem.vc/',
+    test_steemit = 'https://testnet.steemitdev.com',
 }

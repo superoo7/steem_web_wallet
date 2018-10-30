@@ -21,9 +21,6 @@ const Dropdown = (props: IDropdownProps) => {
                     <Link onClick={props.toggleButton} to="/claim">
                         Claim/Create Account
                     </Link>
-                    <Link onClick={props.toggleButton} to="/settings">
-                        Settings
-                    </Link>
                 </React.Fragment>
             ) : (
                 undefined
@@ -33,6 +30,9 @@ const Dropdown = (props: IDropdownProps) => {
             </Link>
             <Link onClick={props.toggleButton} to="/faq">
                 FAQ
+            </Link>
+            <Link onClick={props.toggleButton} to="/settings">
+                Settings
             </Link>
         </div>
     );

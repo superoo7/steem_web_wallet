@@ -40,9 +40,19 @@ class Confirm extends React.Component<IInfoProps, IInfoState> {
         const { message, isInfo, closeInfo } = this.props;
         return (
             <Modal isOpen={isInfo} contentLabel="Confirm" style={customStyles} onRequestClose={closeInfo}>
-                <div style={{ fontSize: '30px', padding: '10px' }}>
+                <div
+                    style={{
+                        fontSize: '30px',
+                        padding: '10px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                    }}
+                >
                     <h3>{message}</h3>
-                    <button onClick={() => closeInfo()}>Okay!</button>
+                    <button className="Btn__Submit" onClick={() => closeInfo()}>
+                        Okay!
+                    </button>
                 </div>
             </Modal>
         );
