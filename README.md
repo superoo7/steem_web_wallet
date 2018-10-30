@@ -6,9 +6,17 @@
 
 Steem Web Wallet, also known as SWW in short. A Steem wallet that can be used on modern web browser, to do micro payment with ease.
 
+With SWW, all transaction are signed on the front end and there is no any backend server involved. Security is top concern of this app.
+
 ![Demo Page](https://ipfs.busy.org/ipfs/QmVejukXfLJuSmtHPyzx3gjrYazZEDXHraELzCXUk8ikEf)
 
 Master Branch is live on https://swallet.netlify.com
+
+[FAQ at here](https://github.com/superoo7/steem_web_wallet/blob/master/FAQ.md)
+
+
+## DISCLAIMER
+This app is still in early phase, so it might have breaking change and buggy. Please use it with care.
 
 ## Current feature
 
@@ -35,6 +43,13 @@ Master Branch is live on https://swallet.netlify.com
 -   Change API in the Settings page. (Done but need to add in race condition for failed api call)
 -   Reduce Web Sizes by using Preact, GZip, CDN
 -   Add Copy to clipboard onto all the input field in the QR code page
+
+## Blog update
+
+- https://steemit.com/utopian-io/@superoo7/development-steem-web-wallet-added-claiming-discounted-account-change-api-and-more
+- https://steemit.com/utopian-io/@superoo7/development-steem-web-wallet-working-prototype-done
+- https://steemit.com/steem/@superoo7/sww-working-prototype
+- https://steemit.com/utopian-io/@superoo7/steem-web-wallet-sww-utopian-io-hackathon
 
 ## Development
 
